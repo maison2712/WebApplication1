@@ -124,10 +124,9 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult> GetFile(string fileName)
         {
-            foreach (DateTime day in EachDay(DateTime.Now.AddDays(-10), DateTime.Now))
+            foreach (string path in getLocalpath())
             {
-                var stringdate = day.ToString("yyyyMMdd");
-                string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate + "/" + fileName;
+                string localFilePath = path + "/" + fileName;
                 if (System.IO.File.Exists(localFilePath))
                 {
                     return File(System.IO.File.OpenRead(localFilePath), "application/octet-stream", Path.GetFileName(localFilePath));
@@ -139,6 +138,17 @@ namespace WebApplication1.Controllers
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
+        }
+        private List<string> getLocalpath()
+        {
+            List<string> localFilePath = new List<string>();
+            foreach (DateTime day in EachDay(DateTime.Now.AddDays(-1), DateTime.Now))
+            {
+                var stringdate = day.ToString("yyyyMMdd");
+                string Path = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;
+                localFilePath.Add(Path);
+            }
+            return localFilePath;
         }
         public ActionResult About()
         {

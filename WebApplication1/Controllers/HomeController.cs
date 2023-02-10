@@ -24,9 +24,9 @@ namespace WebApplication1.Controllers
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
-            mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
+            //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
             //mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            //mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
+            mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -92,11 +92,11 @@ namespace WebApplication1.Controllers
                             part.Content.DecodeTo(stream);
                         }
                     }
-                    EmailEntity.FileAttactment = string.Join(";", fileAttactment);
-                    EmailEntity.Typefilename = string.Join("; ", Typefilename);
-                    listEmail.Add(EmailEntity);
                 }
-               
+                EmailEntity.FileAttactment = string.Join(";", fileAttactment);
+                EmailEntity.Typefilename = string.Join("; ", Typefilename);
+                listEmail.Add(EmailEntity);
+
             }
             ViewBag.listEmail = listEmail;
             return View();
@@ -126,7 +126,6 @@ namespace WebApplication1.Controllers
         {
             foreach (DateTime day in EachDay(DateTime.Now.AddDays(-10), DateTime.Now))
             {
-                //var now = DateTime.Now;
                 var date = day;
                 var stringdate = date.ToString("yyyyMMdd");
                 string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate + "/" + fileName;

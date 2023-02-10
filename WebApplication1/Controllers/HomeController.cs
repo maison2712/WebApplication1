@@ -126,8 +126,7 @@ namespace WebApplication1.Controllers
         {
             foreach (DateTime day in EachDay(DateTime.Now.AddDays(-10), DateTime.Now))
             {
-                var date = day;
-                var stringdate = date.ToString("yyyyMMdd");
+                var stringdate = day.ToString("yyyyMMdd");
                 string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate + "/" + fileName;
                 if (System.IO.File.Exists(localFilePath))
                 {

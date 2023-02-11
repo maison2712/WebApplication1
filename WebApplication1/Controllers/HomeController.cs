@@ -37,6 +37,7 @@ namespace WebApplication1.Controllers
                 var EmailEntity = new EmailEntity();
                 EmailEntity.Id = uid.ToString();
                 EmailEntity.From = message.From.ToString();
+                EmailEntity.To = message.To.ToString();
                 EmailEntity.TimeReceive = message.Date;
                 EmailEntity.Subject = message.Subject;
                 EmailEntity.Body = message.TextBody;

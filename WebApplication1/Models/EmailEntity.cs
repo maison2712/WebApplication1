@@ -9,6 +9,7 @@ namespace WebApplication1.Models
     {
         public string Id { get; set; }
         public string From { get; set; }
+        public string To { get; set; }
         public DateTimeOffset TimeReceive { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }

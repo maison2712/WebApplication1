@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@6.3.0",
+      "destination": "lib/font-awesome/"
+    },
+    {
+      "library": "admin-lte@3.2.0",
+      "destination": "lib/admin-lte/"
+    },
+    {
+      "library": "angular@12.2.17",
+      "destination": "lib/angular/"
+    }
+  ]
+}

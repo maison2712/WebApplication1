@@ -234,6 +234,14 @@
     <Content Include="lib\admin-lte\js\pages\dashboard2.min.js" />
     <Content Include="lib\admin-lte\js\pages\dashboard3.js" />
     <Content Include="lib\admin-lte\js\pages\dashboard3.min.js" />
+    <Content Include="lib\angular.js\angular-csp.css" />
+    <Content Include="lib\angular.js\angular-csp.min.css" />
+    <Content Include="lib\angular.js\angular.js" />
+    <Content Include="lib\angular.js\angular.min.js" />
+    <Content Include="lib\angular\core-testing.umd.js" />
+    <Content Include="lib\angular\core-testing.umd.min.js" />
+    <Content Include="lib\angular\core.umd.js" />
+    <Content Include="lib\angular\core.umd.min.js" />
     <Content Include="lib\font-awesome\css\all.css" />
     <Content Include="lib\font-awesome\css\all.min.css" />
     <Content Include="lib\font-awesome\css\brands.css" />
@@ -269,6 +277,10 @@
     <Content Include="lib\font-awesome\sprites\brands.svg" />
     <Content Include="lib\font-awesome\sprites\regular.svg" />
     <Content Include="lib\font-awesome\sprites\solid.svg" />
+    <Content Include="lib\jquery\jquery.js" />
+    <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="lib\jquery\jquery.slim.js" />
+    <Content Include="lib\jquery\jquery.slim.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="libman.json" />
@@ -296,6 +308,11 @@
     <Content Include="lib\admin-lte\css\alt\adminlte.plugins.min.css.map" />
     <Content Include="lib\admin-lte\js\adminlte.js.map" />
     <Content Include="lib\admin-lte\js\adminlte.min.js.map" />
+    <Content Include="lib\angular\core-testing.umd.js.map" />
+    <Content Include="lib\angular\core.umd.js.map" />
+    <Content Include="lib\angular.js\angular.min.js.map" />
+    <Content Include="lib\jquery\jquery.min.map" />
+    <Content Include="lib\jquery\jquery.slim.min.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -326,6 +343,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Attachment\" />
+    <Folder Include="img\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>

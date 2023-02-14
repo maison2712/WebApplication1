@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,7 +27,8 @@ namespace WebApplication1.Controllers
             mailClient.Connect("imap.gmail.com", 993);
             //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
             //mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
+            //mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
+            mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -134,6 +136,77 @@ namespace WebApplication1.Controllers
                 }
             }
             return null;
+        }
+        [HttpGet]
+        public async Task<ActionResult> getEachEmail(string Id_mail)
+        {
+            var getDetailEmail = new EmailEntity();
+            var mailClient = new ImapClient();
+            mailClient.Connect("imap.gmail.com", 993);
+            //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
+            //mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
+            //mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
+            mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
+            var folder = await mailClient.GetFolderAsync("Inbox");
+            await folder.OpenAsync(FolderAccess.ReadWrite);
+
+            MimeMessage message = folder.GetMessage(UniqueId.Parse(Id_mail));
+            getDetailEmail.Id = Id_mail.ToString();
+            getDetailEmail.From = message.From.ToString();
+            getDetailEmail.To = message.To.ToString();
+            getDetailEmail.TimeReceive = message.Date;
+            getDetailEmail.Subject = message.Subject;
+            getDetailEmail.Body = message.TextBody;
+            var fileAttactment = new List<string>();
+            var Typefilename = new List<string>();
+
+            foreach (MimeEntity attachment in message.Attachments)
+            {
+                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; fileAttactment.Add(fileName);
+                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); Typefilename.Add(mimeType);
+                //    if ((mimeType == "application/pdf" || mimeType == "text/xml"))
+                //    {
+                //        using (var str = System.IO.File.Create(localFilePath + "/File_Pdf_and_XML" + "/" + fileName))
+                //        {
+                //            if (attachment is MessagePart)
+                //            {
+                //                var rfc822 = (MessagePart)attachment;
+
+                //                rfc822.Message.WriteTo(str);
+                //            }
+                //            else
+                //            {
+                //                var part = (MimePart)attachment;
+
+                //                part.Content.DecodeTo(str);
+                //            }
+                //        }
+                //    }
+
+                //    if (!Directory.Exists(localFilePath + stringdate))
+                //    {
+                //        Directory.CreateDirectory(localFilePath + stringdate);
+                //    }
+                //    using (var stream = System.IO.File.Create(localFilePath + stringdate + "/" + fileName))
+                //    {
+                //        if (attachment is MessagePart)
+                //        {
+                //            var rfc822 = (MessagePart)attachment;
+
+                //            rfc822.Message.WriteTo(stream);
+                //        }
+                //        else
+                //        {
+                //            var part = (MimePart)attachment;
+
+                //            part.Content.DecodeTo(stream);
+                //        }
+                //    }
+                }
+                getDetailEmail.FileAttactment = string.Join(";", fileAttactment);
+                getDetailEmail.Typefilename = string.Join("; ", Typefilename);
+
+            return Json(new {data = getDetailEmail}, JsonRequestBehavior.AllowGet);
         }
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {

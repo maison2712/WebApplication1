@@ -13,6 +13,14 @@
     {
       "library": "angular@12.2.17",
       "destination": "lib/angular/"
+    },
+    {
+      "library": "angular.js@1.8.3",
+      "destination": "lib/angular.js/"
+    },
+    {
+      "library": "jquery@3.6.3",
+      "destination": "lib/jquery/"
     }
   ]
 }

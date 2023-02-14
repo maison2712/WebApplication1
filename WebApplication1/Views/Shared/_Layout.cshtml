@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebApplication1.Models;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,8 +7,12 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link href="~/lib/admin-lte/css/adminlte.min.css" rel="stylesheet" />
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link href="~/lib/admin-lte/css/adminlte.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="body-content">
@@ -17,10 +22,12 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/lib/angular.js/angular.min.js"></script>
+    <!-- AdminLTE App -->
     <script src="~/lib/admin-lte/js/adminlte.min.js"></script>
-    @RenderSection("scripts", required: false)
+    <!--<script src="dist/js/adminlte.min.js"></script>-->
+    @RenderSection("index", required: false)
 </body>
 </html>

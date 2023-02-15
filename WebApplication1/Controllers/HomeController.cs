@@ -26,9 +26,9 @@ namespace WebApplication1.Controllers
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
             //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
-            //mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            //mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
-            mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
+            mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
+            //mailClient.Authenticate("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx");
+            //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -144,9 +144,9 @@ namespace WebApplication1.Controllers
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
             //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
-            //mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            //mailClient.Authenticate("kiemtra11062712@gmail.com", "sibdnslycluebzun");
-            mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
+            mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
+            //mailClient.Authenticate("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx");
+            //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -164,45 +164,7 @@ namespace WebApplication1.Controllers
             {
                 var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; fileAttactment.Add(fileName);
                 string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); Typefilename.Add(mimeType);
-                //    if ((mimeType == "application/pdf" || mimeType == "text/xml"))
-                //    {
-                //        using (var str = System.IO.File.Create(localFilePath + "/File_Pdf_and_XML" + "/" + fileName))
-                //        {
-                //            if (attachment is MessagePart)
-                //            {
-                //                var rfc822 = (MessagePart)attachment;
-
-                //                rfc822.Message.WriteTo(str);
-                //            }
-                //            else
-                //            {
-                //                var part = (MimePart)attachment;
-
-                //                part.Content.DecodeTo(str);
-                //            }
-                //        }
-                //    }
-
-                //    if (!Directory.Exists(localFilePath + stringdate))
-                //    {
-                //        Directory.CreateDirectory(localFilePath + stringdate);
-                //    }
-                //    using (var stream = System.IO.File.Create(localFilePath + stringdate + "/" + fileName))
-                //    {
-                //        if (attachment is MessagePart)
-                //        {
-                //            var rfc822 = (MessagePart)attachment;
-
-                //            rfc822.Message.WriteTo(stream);
-                //        }
-                //        else
-                //        {
-                //            var part = (MimePart)attachment;
-
-                //            part.Content.DecodeTo(stream);
-                //        }
-                //    }
-                }
+            }
                 getDetailEmail.FileAttactment = string.Join(";", fileAttactment);
                 getDetailEmail.Typefilename = string.Join("; ", Typefilename);
 
@@ -216,7 +178,7 @@ namespace WebApplication1.Controllers
         private List<string> getLocalpath()
         {
             List<string> localFilePath = new List<string>();
-            foreach (DateTime day in EachDay(DateTime.Now.AddDays(-1), DateTime.Now))
+            foreach (DateTime day in EachDay(DateTime.Now.AddDays(-10), DateTime.Now))
             {
                 var stringdate = day.ToString("yyyyMMdd");
                 string Path = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;

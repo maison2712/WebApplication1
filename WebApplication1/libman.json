@@ -3,10 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "font-awesome@6.3.0",
-      "destination": "lib/font-awesome/"
-    },
-    {
       "library": "admin-lte@3.2.0",
       "destination": "lib/admin-lte/"
     },
@@ -21,6 +17,10 @@
     {
       "library": "jquery@3.6.3",
       "destination": "lib/jquery/"
+    },
+    {
+      "library": "font-awesome@6.3.0",
+      "destination": "lib/font-awesome/"
     }
   ]
 }

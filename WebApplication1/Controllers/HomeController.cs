@@ -51,55 +51,39 @@ namespace WebApplication1.Controllers
 
                 foreach (MimeEntity attachment in message.Attachments)
                 {
-                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; fileAttactment.Add(fileName);
-                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); Typefilename.Add(mimeType);
+                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; 
+                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); 
                     if ((mimeType == "application/pdf" || mimeType == "text/xml"))
                     {
-                        if (!Directory.Exists(localFilePath + "/File_Pdf_and_XML"))
+                        fileAttactment.Add(fileName);
+                        Typefilename.Add(mimeType);
+                        if (!Directory.Exists(localFilePath + stringdate))
                         {
-                            Directory.CreateDirectory(localFilePath + "/File_Pdf_and_XML");
+                            Directory.CreateDirectory(localFilePath + stringdate);
                         }
-                        using (var str = System.IO.File.Create(localFilePath + "/File_Pdf_and_XML" + "/" + fileName))
+                        using (var stream = System.IO.File.Create(localFilePath + stringdate + "/" + fileName))
                         {
                             if (attachment is MessagePart)
                             {
                                 var rfc822 = (MessagePart)attachment;
 
-                                rfc822.Message.WriteTo(str);
+                                rfc822.Message.WriteTo(stream);
                             }
                             else
                             {
                                 var part = (MimePart)attachment;
 
-                                part.Content.DecodeTo(str);
+                                part.Content.DecodeTo(stream);
                             }
-                        }
-                    }
-
-                    if (!Directory.Exists(localFilePath + stringdate))
-                    {
-                        Directory.CreateDirectory(localFilePath + stringdate);
-                    }
-                    using (var stream = System.IO.File.Create(localFilePath + stringdate + "/" + fileName))
-                    {
-                        if (attachment is MessagePart)
-                        {
-                            var rfc822 = (MessagePart)attachment;
-
-                            rfc822.Message.WriteTo(stream);
-                        }
-                        else
-                        {
-                            var part = (MimePart)attachment;
-
-                            part.Content.DecodeTo(stream);
                         }
                     }
                 }
                 EmailEntity.FileAttactment = string.Join(";", fileAttactment);
                 EmailEntity.Typefilename = string.Join("; ", Typefilename);
-                listEmail.Add(EmailEntity);
-
+                if(EmailEntity.FileAttactment != "")
+                {
+                    listEmail.Add(EmailEntity);
+                }
             }
             ViewBag.listEmail = listEmail;
             return View();

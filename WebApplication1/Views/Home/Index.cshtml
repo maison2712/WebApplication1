@@ -216,20 +216,20 @@
                                 <i class="fa-regular fa-filter"></i>
                             </div>
                         </div>
-                            <div>
-                                @foreach (EmailEntity item in ViewBag.listEmail)
-                                {
-                                    <p style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
-                                    <p class="mailbox-read-time">@item.From</p>
-                                    <button ng-click="readDetail(@item.Id)" style="border-radius: 50%;border: 1px solid blue;width:30px;height:20px"></button>
-                                    <hr />
-                                }
-                            
+                        <div>
+                            @foreach (EmailEntity item in ViewBag.listEmail)
+                            {
+                                <p style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
+                                <p class="mailbox-read-time">@item.From</p>
+                                <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color:greenyellow"></i>Xem hóa đơn</button>
+                                <hr />
+                            }
+
                         </div>
                     </div>
                     <!-- /.col -->
                     <div id="emailDetail" class="col-md-9" style="display: none;height:900px;overflow-y: scroll">
-                        <div class="card card-primary card-outline">
+                        <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 <div class="mailbox-read-info" style="position: fixed; top: 57px; width: 63%; background-color: white;">
@@ -331,7 +331,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="fileAttactment" style="position: fixed;bottom: 0;background-color: white"></div>
+                                    <div class="row" id="fileAttactment" style="background-color: white"></div>
                                 </footer>
                             </div>
                             <!-- /.card-footer -->
@@ -362,11 +362,11 @@
     <script>
         var app = angular.module("myApp", [])
         app.controller("MyCtrl", function ($scope, $http) {
-            
+
             $scope.readDetail = function (id) {
-                
                 $("#emailDetail").css("display", "block")
-                $http.get("/Home/getEachEmail?Id_mail=" +id)
+                $("#fileAttactment").empty();
+                $http.get("/Home/getEachEmail?Id_mail=" + id)
                     .then(function (response) {
                         $scope.emailDetail = response.data.data; console.log($scope.emailDetail)
                         $scope.subject = $scope.emailDetail.Subject;
@@ -380,15 +380,42 @@
                         if (replaced !== '') {
                             numTime = Number(replaced);
                         }
-                        $scope.time = new Date(numTime).toString("YYYY-MM-DDTHH");
+                        $scope.time = new Date(numTime).toLocaleString();
                         let split = $scope.FileAttactment.split(";");
                         for (let i = 0; i < split.length; i++) {
-                            $("#fileAttactment").empty().append("<a href='/Home/GetFile?fileName=" + split[i] + "'>" + split[i] + "</a>&emsp;")
+                            if (split[i].split('.').pop() == "xml") {
+                                $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                    '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                    '<a href="/Home/About?stringdate=' + time + '&fileName=' + split[i] + '" class="btn text-danger"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
+                                    '</div >'
+                                )
+                            } else {
+                                $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                    '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                    '</div >'
+                                    )
+                            }
                         }
                     });
-                
+
             }
         })
     </script>
+}
+@section index_css
+{
+<style>
+    .btnWatch {
+        border-radius: 40%;
+        border: 1px solid lightgray;
+        width: 120px;
+        height: 30px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
+</style>
+}

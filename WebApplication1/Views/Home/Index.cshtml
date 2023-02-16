@@ -362,11 +362,14 @@
     <script>
         var app = angular.module("myApp", [])
         app.controller("MyCtrl", function ($scope, $http) {
-
+            //lấy id từ queryString
+            const vUrlParams = new URLSearchParams(window.location.search);
+            var gUserName = vUrlParams.get('username'); 
+            var gPassWord = vUrlParams.get('password'); 
             $scope.readDetail = function (id) {
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
-                $http.get("/Home/getEachEmail?Id_mail=" + id)
+                $http.get("/Home/getEachEmail?Id_mail=" + id + "&username=" + gUserName + "&password=" + gPassWord)
                     .then(function (response) {
                         $scope.emailDetail = response.data.data; console.log($scope.emailDetail)
                         $scope.subject = $scope.emailDetail.Subject;

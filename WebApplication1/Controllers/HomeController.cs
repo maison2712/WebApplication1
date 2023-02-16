@@ -11,23 +11,23 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using static System.Net.Mime.MediaTypeNames;
+
 
 namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
-        [HttpGet]
-        public async Task<ActionResult> Index()
+        //[HttpPost]
+        public async Task<ActionResult> Index(string username, string password)
         {
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
-            //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
-            mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            //mailClient.Authenticate("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx");
+            mailClient.Authenticate(username, password);
             //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
@@ -122,15 +122,37 @@ namespace WebApplication1.Controllers
             return null;
         }
         [HttpGet]
-        public async Task<ActionResult> getEachEmail(string Id_mail)
+        public async Task<JsonResult> validateUser(string username, string password)
+        {
+            var listUser = new List<UserEntity>();
+            var userFind = new UserEntity();
+            UserEntity User1 = new UserEntity("maixson.2712@gmail.com", "qpnchazurvybnkxs"); listUser.Add(User1);
+            UserEntity User2 = new UserEntity("legolas15397@gmail.com", "yixhptngrwpgnwzb"); listUser.Add(User2);
+            UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
+            UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);
+            }
+
+            foreach (UserEntity item in listUser)
+            {
+                if (item.user == username && item.password == password)
+                {
+                    userFind = item;
+                    return Json(new { data = userFind }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json(new { error = "Incorrect username or password" }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
         {
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
-            //mailClient.Authenticate("maixson.2712@gmail.com", "qpnchazurvybnkxs");
-            mailClient.Authenticate("legolas15397@gmail.com", "yixhptngrwpgnwzb");
-            //mailClient.Authenticate("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx");
-            //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
+            mailClient.Authenticate(username, password);
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -181,6 +203,12 @@ namespace WebApplication1.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        //    [HttpPost]
+        public ActionResult Login()
+        {
             return View();
         }
     }

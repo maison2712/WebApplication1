@@ -21,6 +21,14 @@
     {
       "library": "font-awesome@6.3.0",
       "destination": "lib/font-awesome/"
+    },
+    {
+      "library": "bootstrap-modal@2.2.6",
+      "destination": "lib/bootstrap-modal/"
+    },
+    {
+      "library": "bootstrap@5.2.3",
+      "destination": "lib/bootstrap/"
     }
   ]
 }

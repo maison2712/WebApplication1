@@ -223,10 +223,10 @@
                                 int endIndex = @item.From.IndexOf('>');
                                 string exEmail = @item.From.Substring(startIndex, endIndex - startIndex);
                                 string extractedEmail = "<" + exEmail + ">";
-                                <p style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
-                                <p class="mailbox-read-time">@extractedEmail</p>
-                                <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color:greenyellow"></i>Xem hóa đơn</button>
-                                <hr />
+                                <p class="overflow-text" style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
+                                <p class="mailbox-read-time" style="margin-bottom: 0">@extractedEmail</p>
+                                <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color: lightseagreen;font-size:14px"></i>&nbsp; Xem hóa đơn</button>
+                                <hr/>
                             }
 
                         </div>
@@ -237,8 +237,8 @@
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 <div class="mailbox-read-info" style="position: fixed; top: 57px; width: 63%; background-color: white;">
-                                    <h5 style="font-weight: bold"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h5>
-                                    <h6>
+                                    <h5 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h5>
+                                    <h6 class="text-secondary" style="font-size: 15px">
                                         From: {{address}}
                                         <span class="mailbox-read-time float-right">{{time}}</span>
                                     </h6>
@@ -246,7 +246,7 @@
                                 <!-- /.mailbox-read-info -->
                                 <!-- /.mailbox-controls -->
                                 <div class="mailbox-read-message" style="margin-top: 100px">
-                                    <p>--------------Forwarded Mesage-------------</p>
+                                    <p>------------------------------Forwarded Mesage------------------------------</p>
 
                                     <p>
                                         <span style="font-weight: bold;">Subject: </span>{{subject}}
@@ -418,14 +418,21 @@
 {
 <style>
     .btnWatch {
-        border-radius: 40%;
+        border-radius: 50px;
         border: 1px solid lightgray;
-        width: 120px;
-        height: 30px;
         background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 15px;
+        margin-inline-start: auto;
+        margin-right: 10px;
+    }
+    .overflow-text {
+        max-width: 375.25px; /* Thay đổi giá trị tùy theo độ rộng của vùng chứa */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
 }

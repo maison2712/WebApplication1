@@ -243,6 +243,15 @@
     <Content Include="lib\angular\core-testing.umd.min.js" />
     <Content Include="lib\angular\core.umd.js" />
     <Content Include="lib\angular\core.umd.min.js" />
+    <Content Include="lib\bootstrap-modal\css\bootstrap-modal-bs3patch.css" />
+    <Content Include="lib\bootstrap-modal\css\bootstrap-modal-bs3patch.min.css" />
+    <Content Include="lib\bootstrap-modal\css\bootstrap-modal.css" />
+    <Content Include="lib\bootstrap-modal\css\bootstrap-modal.min.css" />
+    <Content Include="lib\bootstrap-modal\img\ajax-loader.gif" />
+    <Content Include="lib\bootstrap-modal\js\bootstrap-modal.js" />
+    <Content Include="lib\bootstrap-modal\js\bootstrap-modal.min.js" />
+    <Content Include="lib\bootstrap-modal\js\bootstrap-modalmanager.js" />
+    <Content Include="lib\bootstrap-modal\js\bootstrap-modalmanager.min.js" />
     <Content Include="lib\bootstrap\css\bootstrap-grid.css" />
     <Content Include="lib\bootstrap\css\bootstrap-grid.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap-grid.rtl.css" />

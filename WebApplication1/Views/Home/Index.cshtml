@@ -219,8 +219,12 @@
                         <div>
                             @foreach (EmailEntity item in ViewBag.listEmail)
                             {
+                                int startIndex = @item.From.IndexOf('<') + 1;
+                                int endIndex = @item.From.IndexOf('>');
+                                string exEmail = @item.From.Substring(startIndex, endIndex - startIndex);
+                                string extractedEmail = "<" + exEmail + ">";
                                 <p style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
-                                <p class="mailbox-read-time">@item.From</p>
+                                <p class="mailbox-read-time">@extractedEmail</p>
                                 <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color:greenyellow"></i>Xem hóa đơn</button>
                                 <hr />
                             }
@@ -235,7 +239,7 @@
                                 <div class="mailbox-read-info" style="position: fixed; top: 57px; width: 63%; background-color: white;">
                                     <h5 style="font-weight: bold"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h5>
                                     <h6>
-                                        From: {{from}}
+                                        From: {{address}}
                                         <span class="mailbox-read-time float-right">{{time}}</span>
                                     </h6>
                                 </div>
@@ -253,14 +257,14 @@
                                     </p>
 
                                     <p>
-                                        <span style="font-weight: bold;">From: </span>{{from}}
+                                        <span style="font-weight: bold;">From: </span><a href="{{address}}">{{address}}</a>
                                     </p>
 
                                     <p>
-                                        <span style="font-weight: bold;">Reply-To: </span>{{from}}
+                                        <span style="font-weight: bold;">Reply-To: </span><a href="{{to}}">{{to}}</a>
                                     </p>
 
-                                    <p><span style="font-weight: bold;">To: </span>{{to}}</p>
+                                    <p><span style="font-weight: bold;">To: </span><a href="{{to}}">{{to}}</a></p>
                                 </div>
                                 <!-- /.mailbox-read-message -->
                             </div>
@@ -383,6 +387,9 @@
                         if (replaced !== '') {
                             numTime = Number(replaced);
                         }
+                        const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
+                        $scope.name = match[1];
+                        $scope.address = match[2];
                         $scope.time = new Date(numTime).toLocaleString();
                         let split = $scope.FileAttactment.split(";");
                         for (let i = 0; i < split.length; i++) {

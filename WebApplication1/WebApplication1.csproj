@@ -178,6 +178,39 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Image\AdminLTELogo.png" />
+    <Content Include="Image\avatar.png" />
+    <Content Include="Image\avatar2.png" />
+    <Content Include="Image\avatar3.png" />
+    <Content Include="Image\avatar4.png" />
+    <Content Include="Image\avatar5.png" />
+    <Content Include="Image\boxed-bg.jpg" />
+    <Content Include="Image\boxed-bg.png" />
+    <Content Include="Image\credit\american-express.png" />
+    <Content Include="Image\credit\cirrus.png" />
+    <Content Include="Image\credit\mastercard.png" />
+    <Content Include="Image\credit\paypal.png" />
+    <Content Include="Image\credit\paypal2.png" />
+    <Content Include="Image\credit\visa.png" />
+    <Content Include="Image\default-150x150.png" />
+    <Content Include="Image\icons.png" />
+    <Content Include="Image\photo1.png" />
+    <Content Include="Image\photo2.png" />
+    <Content Include="Image\photo3.jpg" />
+    <Content Include="Image\photo4.jpg" />
+    <Content Include="Image\prod-1.jpg" />
+    <Content Include="Image\prod-2.jpg" />
+    <Content Include="Image\prod-3.jpg" />
+    <Content Include="Image\prod-4.jpg" />
+    <Content Include="Image\prod-5.jpg" />
+    <Content Include="Image\user1-128x128.jpg" />
+    <Content Include="Image\user2-160x160.jpg" />
+    <Content Include="Image\user3-128x128.jpg" />
+    <Content Include="Image\user4-128x128.jpg" />
+    <Content Include="Image\user5-128x128.jpg" />
+    <Content Include="Image\user6-128x128.jpg" />
+    <Content Include="Image\user7-128x128.jpg" />
+    <Content Include="Image\user8-128x128.jpg" />
     <Content Include="lib\admin-lte\css\adminlte.css" />
     <Content Include="lib\admin-lte\css\adminlte.min.css" />
     <Content Include="lib\admin-lte\css\alt\adminlte.components.css" />
@@ -486,7 +519,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Attachment\" />
-    <Folder Include="img\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>

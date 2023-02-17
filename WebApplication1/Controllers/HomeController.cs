@@ -26,8 +26,16 @@ namespace WebApplication1.Controllers
         {
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
-            mailClient.Connect("imap.gmail.com", 993);
-            mailClient.Authenticate(username, password);
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return View("Login");
+            }
+            else
+            {
+                mailClient.Connect("imap.gmail.com", 993);
+                mailClient.Authenticate(username, password);
+            }
+                
             //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
@@ -131,6 +139,13 @@ namespace WebApplication1.Controllers
             UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
             UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
 
+            foreach (var user in listUser)
+            {
+                if (username == user.user && password == user.password)
+                {
+                    Session.Add("keySession", user);
+                }
+            }
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);
@@ -141,7 +156,6 @@ namespace WebApplication1.Controllers
                 if (item.user == username && item.password == password)
                 {
                     userFind = item;
-                    Session.Add("userFind",userFind);
                     return Json(new { data = userFind }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -211,6 +225,11 @@ namespace WebApplication1.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+        public ActionResult Logout()
+        {
+            Session["keySession"] = null;
+            return RedirectToAction("Index", "Home");
         }
     }
 }

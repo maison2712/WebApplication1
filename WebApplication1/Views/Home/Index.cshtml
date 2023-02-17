@@ -8,104 +8,28 @@
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" style="display: flex; padding-left: 20px; flex-direction: column">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <p>Công ty tôi</p>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
+            <li class="nav-item" style="font-size: 14px">
+                <p>Email nhận hóa đơn: <span id="emailNameOwner"></span></p>
             </li>
         </ul>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <!-- Navbar Search -->
-            <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa-sharp fa-solid fa-question"></i>
                 </a>
-                <div class="navbar-search-block">
-                    <form class="form-inline">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </li>
 
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="~/Image/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="~/Image/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="~/Image/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
+                    <i class="fa-sharp fa-solid fa-bell"></i>
                     <span class="badge badge-warning navbar-badge">15</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -129,15 +53,36 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                    <i class="fas fa-expand-arrows-alt"></i>
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="fa-sharp fa-solid fa-lightbulb"></i>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" ng-click="logout()">
+                    <span><i class="fa-solid fa-user"></i></span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
             </li>
         </ul>
     </nav>
@@ -205,15 +150,30 @@
                 <div class="row">
                     <div class="col-md-3" style="border: 1px solid lightgray; background-color: white;height: 900px;overflow-y: scroll">
                         <div class="row" style="border-bottom: 1px solid lightgray;height:80px">
-                            <div class="col-md-4" style="display: flex; align-items: center; justify-content: center;">
-                                <p style="font-size:30px;font-weight:bolder">
+                            <div class="col-md-6" style="display: flex; align-items: center; justify-content: center;">
+                                <i class="fa-regular fa-envelope text-danger fa-xl"></i>&emsp;
+                                <p style="font-size: 30px; font-weight: bolder; margin: 0px">
                                     Hộp thư
                                 </p>
                             </div>
-                            <div class="col-md-8">
-                                <i class="fa-solid fa-rotate-right" style="font-size:16px"></i>
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                <i class="fa-regular fa-filter"></i>
+                            <div class="col-md-6" style="display: flex; justify-content: center; align-items: center">
+                                <ul class="nav navbar-nav navbar-right" style="flex-direction: row; justify-content: flex-end; ">
+                                    <li style="padding: 20px 4px">
+                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
+                                            <i style="font-size:22px" class="fa-solid fa-rotate-right"></i>
+                                        </button>
+                                    </li>
+                                    <li style="padding: 20px 4px ">
+                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
+                                            <i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i>
+                                        </button>
+                                    </li>
+                                    <li style="padding: 20px 4px ">
+                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
+                                            <i style="font-size:20px" class="fa-solid fa-filter"></i>
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div>
@@ -226,7 +186,7 @@
                                 <p class="overflow-text" style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
                                 <p class="mailbox-read-time" style="margin-bottom: 0">@extractedEmail</p>
                                 <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color: lightseagreen;font-size:14px"></i>&nbsp; Xem hóa đơn</button>
-                                <hr/>
+                                <hr />
                             }
 
                         </div>
@@ -236,7 +196,7 @@
                         <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
                             <div class="card-body p-0">
-                                <div class="mailbox-read-info" style="position: fixed; top: 57px; width: 63%; background-color: white;">
+                                <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 63%; background-color: white;">
                                     <h5 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h5>
                                     <h6 class="text-secondary" style="font-size: 15px">
                                         From: {{address}}
@@ -370,6 +330,7 @@
             const vUrlParams = new URLSearchParams(window.location.search);
             var gUserName = vUrlParams.get('username'); 
             var gPassWord = vUrlParams.get('password'); 
+            $("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>")
             $scope.readDetail = function (id) {
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
@@ -388,7 +349,7 @@
                             numTime = Number(replaced);
                         }
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
-                        $scope.name = match[1];
+                        $scope.nameEmail = match[1];
                         $scope.address = match[2];
                         $scope.time = new Date(numTime).toLocaleString();
                         let split = $scope.FileAttactment.split(";");
@@ -411,12 +372,25 @@
                     });
 
             }
+            $scope.logout = function () {
+                window.location.href = "/Home/Logout";
+            }
         })
     </script>
 }
 @section index_css
 {
 <style>
+    .btnControlMailBox {
+        border-radius: 50%;
+        border: none;
+        background-color: #e4e6eb;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        width: 40px;
+        height: 40px;
+    }
     .btnWatch {
         border-radius: 50px;
         border: 1px solid lightgray;

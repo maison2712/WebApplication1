@@ -141,6 +141,7 @@ namespace WebApplication1.Controllers
                 if (item.user == username && item.password == password)
                 {
                     userFind = item;
+                    Session.Add("userFind",userFind);
                     return Json(new { data = userFind }, JsonRequestBehavior.AllowGet);
                 }
             }

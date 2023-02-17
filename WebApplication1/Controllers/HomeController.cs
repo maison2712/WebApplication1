@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                mailClient.Connect("imap.gmail.com", 993);
+                mailClient.Connect("imap.gmail.com", 993);o
                 mailClient.Authenticate(username, password);
             }
                 

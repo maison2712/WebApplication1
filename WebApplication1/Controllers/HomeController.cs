@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Xml;
+using WebApp_ReadXML.Models;
 using WebApplication1.Models;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -26,8 +28,16 @@ namespace WebApplication1.Controllers
         {
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
-            mailClient.Connect("imap.gmail.com", 993);
-            mailClient.Authenticate(username, password);
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return View("Login");
+            }
+            else
+            {
+                mailClient.Connect("imap.gmail.com", 993);o
+                mailClient.Authenticate(username, password);
+            }
+                
             //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
@@ -192,11 +202,64 @@ namespace WebApplication1.Controllers
             }
             return localFilePath;
         }
-        public ActionResult About()
+        public ActionResult About(string stringdate, string fileName)
         {
-            ViewBag.Message = "Your application description page.";
+            string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.Load(filePath);
+            string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon/NDHDon";
+            var invoice = new InvoiceEntity();
 
-            return View();
+            //đọc thông tin người bán
+            var seller = new Seller();
+            seller.Ten = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/Ten").InnerText;
+            seller.MST = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/MST").InnerText;
+            seller.DChi = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/DChi").InnerText;
+            seller.DCTDTu = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/DCTDTu").InnerText;
+            seller.STKNHang = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/STKNHang").InnerText;
+            seller.TNHang = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/TNHang").InnerText;
+            invoice.seller = seller;
+
+            //đọc thông tin người mua
+            var buyer = new Buyer();
+            buyer.Ten = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/Ten").InnerText;
+            buyer.MST = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/MST").InnerText;
+            buyer.DChi = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/DChi").InnerText;
+            invoice.buyer = buyer;
+
+            //đọc thông tin hàng hóa dịch vụ
+            XmlNodeList listServiceProductNode = xmlDocument.SelectNodes(pathNodeXML + "/DSHHDVu/HHDVu");
+            var listServiceProduct = new List<ServiceProduct>();
+
+            foreach (XmlNode node in listServiceProductNode)
+            {
+                var serviceProduct = new ServiceProduct();
+
+                serviceProduct.TChat = int.Parse(node["TChat"].InnerText);
+                serviceProduct.STT = int.Parse(node["STT"].InnerText);
+                serviceProduct.THHDVu = node["THHDVu"].InnerText;
+                serviceProduct.DVTinh = node["DVTinh"].InnerText;
+                serviceProduct.SLuong = int.Parse(node["SLuong"].InnerText);
+                serviceProduct.DGia = decimal.Parse(node["DGia"].InnerText);
+                serviceProduct.ThTien = decimal.Parse(node["ThTien"].InnerText);
+                serviceProduct.TSuat = node["TSuat"].InnerText;
+
+                listServiceProduct.Add(serviceProduct);
+            }
+            invoice.serviceProducts = listServiceProduct;
+
+            //đọc thông tin thanh toán
+            var pay = new Pay();
+            pay.TSuat = xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/TSuat").InnerText;
+            pay.ThTien = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/ThTien").InnerText);
+            pay.TThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/TThue").InnerText);
+            pay.TgTCThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTCThue").InnerText);
+            pay.TgTThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTThue").InnerText);
+            pay.TgTTTBSo = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBSo").InnerText);
+            pay.TgTTTBChu = xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBChu").InnerText;
+            invoice.pay = pay;
+
+            return View(invoice);
         }
 
         public ActionResult Contact()

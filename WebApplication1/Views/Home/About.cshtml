@@ -1,7 +1,30 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿@using WebApplication1.Models
+@{
+    ViewBag.Title = "Read File XML";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="container mt-5" ng-app="myApp" ng-controller="myCtrl">
+   <div class="row">
+       <div class="col-md-8">
+           <div class="row form-group">
+               <div class="col-md-11" style="background-color:#eae6e6;">
+                   <h3 class="text-info"><b><i class="fa-solid fa-shop"></i> Đơn vị bán hàng</b></h3>
+               </div>
+           </div>
+       </div>
+       <div class="col-md-4">
+           <div class="row form-group">
+               <div class="col-md-12 text-center py-auto" style="background-color: #eae6e6;">
+                   <h3 class="text-info"><b>Đã kiểm tra</b></h3>
+               </div>
+               <div class="col-ms-12">
+                   <p>Mẫu số: {{mauSo}}</p>
+                   <p>Ký hiệu: {{kyHieu}}</p>
+                   <p>Số hóa đơn: {{soHD}}</p>
+                   <p>Ngày hóa đơn: {{ngayHD}}</p>
+                   <p>Ngày ký: {{ngayKy}}</p>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>

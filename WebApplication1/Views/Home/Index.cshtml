@@ -152,25 +152,25 @@
                         <div class="row" style="border-bottom: 1px solid lightgray;height:80px">
                             <div class="col-md-6" style="display: flex; align-items: center; justify-content: center;">
                                 <i class="fa-regular fa-envelope text-danger fa-xl"></i>&emsp;
-                                <p style="font-size: 30px; font-weight: bolder; margin: 0px">
+                                <h2 style="font-weight: bolder; margin: 0px">
                                     Hộp thư
-                                </p>
+                                </h2>
                             </div>
                             <div class="col-md-6" style="display: flex; justify-content: center; align-items: center">
                                 <ul class="nav navbar-nav navbar-right" style="flex-direction: row; justify-content: flex-end; ">
                                     <li style="padding: 20px 4px">
-                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
-                                            <i style="font-size:22px" class="fa-solid fa-rotate-right"></i>
+                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
+                                            <h5 class="m-auto"><i style="font-size:22px" class="fa-solid fa-rotate-right"></i></h5>
                                         </button>
                                     </li>
                                     <li style="padding: 20px 4px ">
-                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
-                                            <i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i>
+                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
+                                            <h5 class="m-auto"><i style="font-size:20px" class="fa-solid fa-magnifying-glass"></i></h5>
                                         </button>
                                     </li>
                                     <li style="padding: 20px 4px ">
-                                        <button id="btnControlMailBox_Reload" class="btnControlMailBox">
-                                            <i style="font-size:20px" class="fa-solid fa-filter"></i>
+                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
+                                            <h5 class="m-auto"><i style="font-size:20px" class="fa-solid fa-filter"></i></h5>
                                         </button>
                                     </li>
                                 </ul>
@@ -197,7 +197,7 @@
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 63%; background-color: white;">
-                                    <h5 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h5>
+                                    <h3 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h3>
                                     <h6 class="text-secondary" style="font-size: 15px">
                                         From: {{address}}
                                         <span class="mailbox-read-time float-right">{{time}}</span>
@@ -381,16 +381,6 @@
 @section index_css
 {
 <style>
-    .btnControlMailBox {
-        border-radius: 50%;
-        border: none;
-        background-color: #e4e6eb;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        width: 40px;
-        height: 40px;
-    }
     .btnWatch {
         border-radius: 50px;
         border: 1px solid lightgray;

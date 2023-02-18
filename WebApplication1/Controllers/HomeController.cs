@@ -32,7 +32,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                mailClient.Connect("imap.gmail.com", 993);o
+                mailClient.Connect("imap.gmail.com", 993);
                 mailClient.Authenticate(username, password);
             }
                 
@@ -138,14 +138,7 @@ namespace WebApplication1.Controllers
             UserEntity User2 = new UserEntity("legolas15397@gmail.com", "yixhptngrwpgnwzb"); listUser.Add(User2);
             UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
             UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
-
-            foreach (var user in listUser)
-            {
-                if (username == user.user && password == user.password)
-                {
-                    Session.Add("keySession", user);
-                }
-            }
+            
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);

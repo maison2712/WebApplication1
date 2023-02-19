@@ -348,6 +348,7 @@
                         if (replaced !== '') {
                             numTime = Number(replaced);
                         }
+                        var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, "");
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
                         $scope.nameEmail = match[1];
                         $scope.address = match[2];
@@ -358,7 +359,7 @@
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                    '<a href="/Home/About?stringdate=' + time + '&fileName=' + split[i] + '" class="btn text-danger"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
+                                    '<a href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '" class="btn text-danger"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
                                     '</div >'
                                 )
                             } else {

@@ -1,7 +1,92 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿@using WebApplication1.Models
+@{
+    ViewBag.Title = "Read File XML";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="container mt-5" ng-app="myApp" ng-controller="myCtrl">
+    <div class="row py-4" style="border-radius: 25px; background-color: #edf3f6">
+        <div class="col-md-10 mx-auto">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                            <div class="row d-flex align-items-center">
+                                <i class="fa-solid fa-shop text-info mx-2"></i>
+                                <h3 class="text-info my-auto"><b>Đơn vị bán hàng</b></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Đơn vị :</p>
+                            <p>Mã số thuế : </p>
+                            <p>Địa chỉ : </p>
+                        </div>
+                        <div class="col-md-7">
+                            <p><b>@Model.seller.Ten</b></p>
+                            <p><b>@Model.seller.MST</b></p>
+                            <p><b>@Model.seller.DChi</b></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
+                            <div class="row d-flex align-items-center">
+                                <i class="fa-solid fa-cart-shopping text-info mx-2"></i>
+                                <h3 class="text-info my-auto"><b> Đơn vị mua hàng</b></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Đơn vị :</p>
+                            <p>Mã số thuế : </p>
+                            <p>Địa chỉ : </p>
+                        </div>
+                        <div class="col-md-7">
+                            <p><b>@Model.buyer.Ten</b></p>
+                            <p><b>@Model.buyer.MST</b></p>
+                            <p><b>@Model.buyer.DChi</b></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
+                            <div class="row d-flex align-items-center">
+                                <i class="fa-solid fa-money-check-dollar text-info mx-2"></i>
+                                <h3 class="text-info my-auto"><b> Thông tin thanh toán</b></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Tổng tiền trước thuế :</p>
+                            <p>Tổng thuế GTGT : </p>
+                            <p>Tổng tiền thanh toán : </p>
+                        </div>
+                        <div class="col-md-7">
+                            <p><b>@Model.pay.TgTCThue</b></p>
+                            <p><b>@Model.pay.TgTThue</b></p>
+                            <p><b>@Model.pay.TgTTTBSo</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                            <div class="row d-flex justify-content-center">
+                                <h3 class="text-info my-auto"><b>Đã kiểm tra</b></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Mẫu số: </p>
+                            <p>Ký hiệu: </p>
+                            <p>Số hóa đơn: </p>
+                            <p>Ngày hóa đơn: </p>
+                            <p>Ngày ký: </p>
+                        </div>
+                        <div class="col-md-7">
+                            <p><b></b></p>
+                            <p><b></b></p>
+                            <p><b></b></p>
+                            <p><b></b></p>
+                            <p><b></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

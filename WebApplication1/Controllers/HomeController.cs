@@ -63,7 +63,7 @@ namespace WebApplication1.Controllers
                 {
                     var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; 
                     string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); 
-                    if ((mimeType == "application/pdf" || mimeType == "text/xml"))
+                    if (mimeType == "application/pdf" || mimeType == "text/xml")
                     {
                         fileAttactment.Add(fileName);
                         Typefilename.Add(mimeType);
@@ -178,8 +178,13 @@ namespace WebApplication1.Controllers
 
             foreach (MimeEntity attachment in message.Attachments)
             {
-                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; fileAttactment.Add(fileName);
-                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); Typefilename.Add(mimeType);
+                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; 
+                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); 
+                if (mimeType == "application/pdf" || mimeType == "text/xml")
+                {
+                    fileAttactment.Add(fileName);
+                    Typefilename.Add(mimeType);
+                }
             }
                 getDetailEmail.FileAttactment = string.Join(";", fileAttactment);
                 getDetailEmail.Typefilename = string.Join("; ", Typefilename);

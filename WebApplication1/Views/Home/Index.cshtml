@@ -148,7 +148,7 @@
             <div class="container-fluid">
 
                 <div class="row">
-                    <div class="col-md-3" style="border: 1px solid lightgray; background-color: white;height: 900px;overflow-y: scroll">
+                    <div class="col-md-3 mail-box">
                         <div class="row" style="border-bottom: 1px solid lightgray;height:80px">
                             <div class="col-md-6" style="display: flex; align-items: center; justify-content: center;">
                                 <i class="fa-regular fa-envelope text-danger fa-xl"></i>&emsp;
@@ -181,10 +181,10 @@
                             {
                                 int startIndex = @item.From.IndexOf('<') + 1;
                                 int endIndex = @item.From.IndexOf('>');
-                                string exEmail = @item.From.Substring(startIndex, endIndex - startIndex);
-                                string extractedEmail = "<" + exEmail + ">";
+                                string extractedEmail = "<" + @item.From.Substring(startIndex, endIndex - startIndex) + ">";
                                 <p class="overflow-text" style="font-weight: bold; color: dodgerblue;cursor:pointer">@item.Subject</p>
                                 <p class="mailbox-read-time" style="margin-bottom: 0">@extractedEmail</p>
+                                <span class="mailbox-read-time float-right" style="float: left !important">@item.TimeReceive</span>
                                 <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color: lightseagreen;font-size:14px"></i>&nbsp; Xem hóa đơn</button>
                                 <hr />
                             }
@@ -237,7 +237,7 @@
                                     <ul>
                                         <li>Số hóa đơn: <span style="font-weight: bold;"></span></li>
                                         <li>Mẫu ra số hóa đơn: <span style="font-weight: bold;"></span></li>
-                                        <li>Số hóa đơn: <span style="font-weight: bold;"></span></li>
+                                        <li>Ký hiệu hóa đơn: <span style="font-weight: bold;"></span></li>
                                     </ul>
                                     <p>Chi tiết các file đính kèm.</p>
                                     <p>Mọi vướng mắc xin liên hệ trực tiếp với kế toán văn phòng để được giải đáp.</p>
@@ -398,6 +398,13 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .col-md-3.mail-box {
+        border: 1px solid lightgray;
+        background-color: white;
+        overflow-y: scroll;
+        height: calc(100vh - 50px);
+        padding-bottom: 40px;
     }
 </style>
 }

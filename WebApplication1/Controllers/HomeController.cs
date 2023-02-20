@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
@@ -132,7 +133,7 @@ namespace WebApplication1.Controllers
             return null;
         }
         [HttpGet]
-        public async Task<JsonResult> validateUser(string username, string password)
+        public JsonResult validateUser(string username, string password)
         {
             var listUser = new List<UserEntity>();
             var userFind = new UserEntity();
@@ -209,12 +210,29 @@ namespace WebApplication1.Controllers
         }
         public ActionResult About(string stringdate, string fileName)
         {
+
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(filePath);
             string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon/NDHDon";
             var invoice = new InvoiceEntity();
 
+
+            SignedXml signedXml = new SignedXml(xmlDocument);
+            XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
+            signedXml.LoadXml((XmlElement)nodeList.Item(0));
+
+            var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText;
+            byte[] tmp;
+            tmp = System.Convert.FromBase64String(certificate);
+            X509Certificate2 cer = new X509Certificate2(tmp);
+
+            bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key);
+
+            if (!verifiedXml)
+            {
+                return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
+            }
             //đọc thông tin người bán
             var seller = new Seller();
             seller.Ten = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/Ten").InnerText;
@@ -263,6 +281,7 @@ namespace WebApplication1.Controllers
             pay.TgTTTBSo = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBSo").InnerText);
             pay.TgTTTBChu = xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBChu").InnerText;
             invoice.pay = pay;
+
 
             return View(invoice);
         }

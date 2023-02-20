@@ -169,7 +169,7 @@
                                         </button>
                                     </li>
                                     <li style="padding: 20px 4px ">
-                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
+                                        <button id="btnControlMailBox_Reload" ng-click='btNoteBody_function()' class="btn rounded-circle" style="background-color: #e4e6eb">
                                             <h5 class="m-auto"><i style="font-size:20px" class="fa-solid fa-filter"></i></h5>
                                         </button>
                                     </li>
@@ -319,6 +319,36 @@
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
+    <div id="modalNote" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" style="transition: none;font-size: 14px;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="height: 170px;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ghi sổ kế toán</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="height: 68px;padding: 10px 16px;">
+                    <p style="font-weight: 600;">Ghi sổ kế toán</p>
+                    <div class="form-group-new k-form-field k-d-flex">
+                        <label>Ngày chứng từ</label>
+                        <div style="width: 140px;margin-right: 10px;">
+                            <select k-ng-model="FinancialPaper_Day_model" kendo-drop-down-list k-options="FinancialPaper_Day" class="form-control" style="height: 25px;"></select>
+                        </div>
+                        <div style="width: 160px;height: 25px;border:  0.1rem solid #36363362;border-radius: 5px;">
+                            <input ng-model="BillDay_model" k-options="BillDay_options" kendo-datepicker placeholder="yyyy-mm-dd" style="border: none;height: 23px;width: 158px;">
+                        </div>
+                        <p style="margin: 0 8px;">-</p>
+                        <div style="width: 160px;height: 25px;border:  0.1rem solid #36363362;border-radius: 5px;">
+                            <input ng-model="BillCreateDay_model" k-options="BillDay_options" kendo-datepicker placeholder="yyyy-mm-dd" style="border: none;height: 23px;width: 158px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: block;height: 50px;padding: 8px 25px;border-top: none;">
+                    <kendo-button type="button" k-options="byActions" ng-click="byActions_function()" class="btActions text-primary disabled" style="height: 27px;">&ensp; Thực hiện</kendo-button>
+                    <kendo-button type="button" k-options="btReturn" class="btNo text-primary disabled" data-dismiss="modal" style="height: 27px;">&ensp; Quay lại</kendo-button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- ./wrapper -->
 @section index
@@ -373,6 +403,9 @@
                     });
 
             }
+            $scope.btNoteBody_function = function () {
+                $("#modalNote").modal('show');
+            };
             $scope.logout = function () {
                 window.location.href = "/Home/Logout";
             }

@@ -192,7 +192,7 @@
                         </div>
                     </div>
                     <!-- /.col -->
-                    <div id="emailDetail" class="col-md-9" style="display: none;height:900px;overflow-y: scroll">
+                    <div id="emailDetail" class="col-md-9 Detailmail-box">
                         <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
                             <div class="card-body p-0">
@@ -306,8 +306,6 @@
 
                     <hr />
                 </div>
-
-
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
@@ -402,6 +400,14 @@
     .col-md-3.mail-box {
         border: 1px solid lightgray;
         background-color: white;
+        overflow-y: scroll;
+        height: calc(100vh - 50px);
+        padding-bottom: 40px;
+    }
+    .col-md-9.Detailmail-box {
+        /*border: 1px solid lightgray;
+        background-color: white;*/
+        display: none;
         overflow-y: scroll;
         height: calc(100vh - 50px);
         padding-bottom: 40px;

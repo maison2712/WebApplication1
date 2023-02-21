@@ -29,6 +29,10 @@
     {
       "library": "font-awesome@6.3.0",
       "destination": "lib/font-awesome/"
+    },
+    {
+      "library": "kendo-ui-core@2014.1.416",
+      "destination": "lib/kendo-ui-core/"
     }
   ]
 }

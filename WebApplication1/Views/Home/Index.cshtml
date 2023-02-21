@@ -353,7 +353,7 @@
     {
     <script>
         var app = angular.module("myApp", [])
-        app.controller("MyCtrl", function ($scope, $http) {
+        app.controller("MyCtrl", function ($scope, $http, $compile) {
             //lấy id từ queryString
             const vUrlParams = new URLSearchParams(window.location.search);
             var gUserName = vUrlParams.get('username'); 
@@ -387,6 +387,9 @@
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                    '<div ng-app="myApp" ng-controller="MyCtrl">' +
+                                    $compile('<button ng-click="xemhoadon()"><i class="fa - regular fa - eye"></i>&nbsp; Xem hóa đơn</button>')($scope) +
+                                    '</div>' +
                                     '<a href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '" class="btn text-danger"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
                                     '</div >'
                                 )
@@ -400,6 +403,9 @@
                         }
                     });
 
+            }
+            $scope.xemhoadon = function () {
+                alert("ádasdasdasd")
             }
             $scope.btNoteBody_function = function () {
                 $("#modalNote").modal('show');

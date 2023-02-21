@@ -317,6 +317,110 @@
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
+
+    <!------------- Modal Hóa Đơn Điện Tử ------------------>
+    <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="text-center text-info m-3">
+                    <h3 id="invoiceModalLabel"><b>Hóa đơn điện tử</b></h3>
+                </div>
+                <div class="modal-body" style="background-color: #edf3f6">
+                    <div class="row py-4">
+                        <div class="col-md-12 mx-auto">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                            <div class="row d-flex align-items-center">
+                                                <i class="fa-solid fa-shop text-info mx-2"></i>
+                                                <h4 class="text-info my-auto"><b>Đơn vị bán hàng</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Đơn vị :</p>
+                                            <p>Mã số thuế : </p>
+                                            <p>Địa chỉ : </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
+                                            <div class="row d-flex align-items-center">
+                                                <i class="fa-solid fa-cart-shopping text-info mx-2"></i>
+                                                <h4 class="text-info my-auto"><b> Đơn vị mua hàng</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Đơn vị :</p>
+                                            <p>Mã số thuế : </p>
+                                            <p>Địa chỉ : </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
+                                            <div class="row d-flex align-items-center">
+                                                <i class="fa-solid fa-money-check-dollar text-info mx-2"></i>
+                                                <h4 class="text-info my-auto"><b> Thông tin thanh toán</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Tổng tiền trước thuế :</p>
+                                            <p>Tổng thuế GTGT : </p>
+                                            <p>Tổng tiền thanh toán : </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                            <div class="row d-flex justify-content-center">
+                                                <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Mẫu số: </p>
+                                            <p>Ký hiệu: </p>
+                                            <p>Số hóa đơn: </p>
+                                            <p>Ngày hóa đơn: </p>
+                                            <p>Ngày ký: </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                            <p><b></b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---------/ Modal Hóa đơn điện tử----------->
+
+    <!------------>
     <div id="modalNote" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" style="transition: none;font-size: 14px;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" style="height: 170px;">
@@ -384,26 +488,34 @@
                         let split = $scope.FileAttactment.split(";");
                         for (let i = 0; i < split.length; i++) {
                             if (split[i].split('.').pop() == "xml") {
-                                $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                    '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                    '<a href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '" class="btn text-danger"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
-                                    '</div >'
+                                $("#fileAttactment").append(
+                                    '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                        '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
+                                        '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                        /*---thẻ a này là nút show modal ---- '<a class="btn text-danger" id="btnShowModalHDDTClick"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +*/
+                                        '<a class="text-danger" href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
+                                    '</div>'
                                 )
                             } else {
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                    '</div >'
+                                    '</div>'
                                     )
                             }
                         }
                     });
 
             }
+
             $scope.btNoteBody_function = function () {
                 $("#modalNote").modal('show');
             };
+
+            //--- click hiển thị modal Hóa Đơn Điện Tử
+            $(document).on("click", "#btnShowModalHDDTClick", function () {
+                $("#invoiceModal").modal("show");
+            })
             $scope.logout = function () {
                 window.location.href = "/Home/Logout";
             }
@@ -444,6 +556,14 @@
         overflow-y: scroll;
         height: calc(100vh - 50px);
         padding-bottom: 40px;
+    }
+    /*--- Đặt CSS cho titile của window*/
+    .k-window-titlebar.k-hstack {
+        background-color: #0067c7;
+        color: white;
+        height: 35px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
     }
 </style>
 }

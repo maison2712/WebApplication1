@@ -208,7 +208,8 @@ namespace WebApplication1.Controllers
             }
             return localFilePath;
         }
-        public ActionResult About(string stringdate, string fileName)
+        //-------------------------------đọc file XML---------------------------------------------------
+        public JsonResult About(string stringdate, string fileName)
         {
 
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
@@ -290,7 +291,7 @@ namespace WebApplication1.Controllers
                 Certificate2.Subject = cer.Subject;
                 invoice.Certificate2 = Certificate2;
             }
-            return View(invoice);
+            return Json(new { data = invoice }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Contact()

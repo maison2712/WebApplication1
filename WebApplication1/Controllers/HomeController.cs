@@ -20,6 +20,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Xml;
+using System.Xml.Linq;
 using WebApp_ReadXML.Models;
 using WebApplication1.Models;
 using static System.Net.Mime.MediaTypeNames;
@@ -32,8 +33,8 @@ namespace WebApplication1.Controllers
         //[HttpPost]
         public async Task<ActionResult> Index(string username, string password)
         {
-            //username = "legolas15397@gmail.com";
-            //password = "yixhptngrwpgnwzb";
+            //username = "kiemtra11062712@gmail.com";
+            //password = "ilgtrxlhaeqzkbbx";
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -166,8 +167,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
         {
-            //username = "legolas15397@gmail.com";
-            //password = "yixhptngrwpgnwzb";
+            //username = "kiemtra11062712@gmail.com";
+            //password = "ilgtrxlhaeqzkbbx";
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
@@ -293,12 +294,12 @@ namespace WebApplication1.Controllers
             {
                 //đọc thông tin người bán
                 var seller = new Seller();
-                seller.Ten = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/Ten").InnerText;
-                seller.MST = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/MST").InnerText;
-                seller.DChi = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/DChi").InnerText;
-                seller.DCTDTu = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/DCTDTu").InnerText;
-                seller.STKNHang = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/STKNHang").InnerText;
-                seller.TNHang = xmlDocument.SelectSingleNode(pathNodeXML + "/NBan/TNHang").InnerText;
+                seller.Ten = ReadLineXML(xmlDocument, "/NBan/Ten");  
+                seller.MST = ReadLineXML(xmlDocument, "/NBan/MST"); 
+                seller.DChi = ReadLineXML(xmlDocument, "/NBan/DChi"); 
+                seller.DCTDTu = ReadLineXML(xmlDocument, "/NBan/DCTDTu");
+                seller.STKNHang = ReadLineXML(xmlDocument, "/NBan/STKNHang");
+                seller.TNHang = ReadLineXML(xmlDocument, "/NBan/TNHang");
                 invoice.seller = seller;
 
                 //đọc thông tin người mua
@@ -348,7 +349,20 @@ namespace WebApplication1.Controllers
             }
             return Json(new { data = invoice }, JsonRequestBehavior.AllowGet);
         }
+        private string ReadLineXML(XmlDocument xmlDocument ,string elementXml)
+        {
+            string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon/NDHDon";
+            var result = xmlDocument.SelectSingleNode(pathNodeXML + elementXml);
+            if (result == null)
+            {
+                return "";
+            }
+            else
+            {
+                return result.InnerText;
+            }
 
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

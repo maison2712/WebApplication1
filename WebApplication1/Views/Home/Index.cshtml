@@ -151,9 +151,9 @@
                         <div class="row" style="border-bottom: 1px solid lightgray;height:80px">
                             <div class="col-md-6" style="display: flex; align-items: center; justify-content: center;">
                                 <i class="fa-regular fa-envelope text-danger fa-xl"></i>&emsp;
-                                <h2 style="font-weight: bolder; margin: 0px">
+                                <h3 style="font-weight: bolder; margin: 0px">
                                     Hộp thư
-                                </h2>
+                                </h3>
                             </div>
                             <div class="col-md-6" style="display: flex; justify-content: center; align-items: center">
                                 <ul class="nav navbar-nav navbar-right" style="flex-direction: row; justify-content: flex-end; ">
@@ -270,7 +270,7 @@
     </aside>
     <!-- /.control-sidebar -->
     <!------------- Modal Hóa Đơn Điện Tử ------------------>
-    <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+    <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="transition: none;font-size: 16px">
         <div class="modal-dialog modal-lg" style="max-width: 70%" role="document">
             <div class="modal-content">
                 <div class="text-center text-info m-3">
@@ -281,28 +281,32 @@
                         <div class="row py-4" style="border-radius: 25px; background-color: #edf3f6; padding: 5px 10px 5px 10px">
                             <div class="col-md-12 mx-auto" style="display: flex">
                                 @*<div class="row">*@
-                                <div class="col-md-9" style="margin-left: 10px">
+                                <div class="col-md-8" style="margin-left: 10px">
                                     <div class="row">
                                         <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                             <div class="row">
-                                                <h3 class="text-info my-auto"><i class="fa-solid fa-shop fa-2xs"></i> &nbsp;<b>Đơn vị bán hàng</b></h3>
+                                                <h4 class="text-info my-auto"><i class="fa-solid fa-shop fa-2xs"></i> &nbsp;<b>Đơn vị bán hàng</b></h4>
                                             </div>
                                         </div>
-                                        <div style="width: fit-content">
-                                            <p>Đơn vị :</p>
-                                            <p>Mã số thuế : </p>
-                                            <p>Địa chỉ : </p>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <p><b>{{SellerTen}}</b></p>
-                                            <p><b>{{SellerMST}}</b></p>
-                                            <p><b>{{SellerDChi}}</b></p>
+                                        <div class="col-md-11">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <p>Đơn vị :</p>
+                                                    <p>Mã số thuế : </p>
+                                                    <p>Địa chỉ : </p>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p><b>{{SellerTen}}</b></p>
+                                                    <p><b>{{SellerMST}}</b></p>
+                                                    <p><b>{{SellerDChi}}</b></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
                                             <div class="row">
-                                                <h3 class="text-info my-auto"><i class="fa-solid fa-cart-shopping fa-2xs"></i>&nbsp; <b> Đơn vị mua hàng</b></h3>
+                                                <h4 class="text-info my-auto"><i class="fa-solid fa-cart-shopping fa-2xs"></i>&nbsp; <b> Đơn vị mua hàng</b></h4>
                                             </div>
                                         </div>
                                         <div style="width: fit-content">
@@ -319,12 +323,12 @@
                                     <div class="row">
                                         <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
                                             <div class="row">
-                                                <h3 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Thông tin thanh toán</b></h3>
+                                                <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Chữ ký số</b></h4>
                                             </div>
                                         </div>
                                         <div style="width: fit-content">
-                                            <p>Tên người gửi: </p>
-                                            <p>Địa chỉ: </p>
+                                            <p>X509SubjectName CQT: </p>
+                                            <p>X509SubjectName NBan: </p>
                                         </div>
                                         <div class="col-md-9">
                                             <p><b>{{Issueser1}}</b></p>
@@ -332,11 +336,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="row">
                                         <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                             <div class="row text-center">
-                                                <h3 class="text-info my-auto"><b>Đã kiểm tra</b></h3>
+                                                <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -357,7 +361,7 @@
                                     <div class="row">
                                         <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                             <div class="row d-flex justify-content-center">
-                                                <h3 class="text-info my-auto"><b>Đã kiểm tra</b></h3>
+                                                <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Thông tin thanh toán</b></h4>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
@@ -376,9 +380,6 @@
                             </div>
                             <div class="row">
                                 <h3 class="text-primary" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
-                            </div>
-                            <div class="row" style="justify-content:end">
-                                <button id="submit" name="submit" class="btn btn-danger" value="1" style="width: 10%" ng-click="btnClose()">Close</button>
                             </div>
                         </div>
                     </div>

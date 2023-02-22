@@ -103,7 +103,7 @@ namespace WebApplication1.Controllers
                     listEmail.Add(EmailEntity);
                 }
             }
-            ViewBag.listEmail = listEmail;
+            ViewBag.listEmail = listEmail.OrderByDescending(x => x.TimeReceive);
             return View();
         }
 

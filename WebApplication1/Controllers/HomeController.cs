@@ -3,9 +3,14 @@ using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
 using MimeKit;
+using Org.BouncyCastle.Crypto.Macs;
+using SharpCompress.Archives;
+using SharpCompress.Archives.Rar;
+using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -38,7 +43,7 @@ namespace WebApplication1.Controllers
                 mailClient.Connect("imap.gmail.com", 993);
                 mailClient.Authenticate(username, password);
             }
-                
+
             //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
@@ -62,9 +67,9 @@ namespace WebApplication1.Controllers
 
                 foreach (MimeEntity attachment in message.Attachments)
                 {
-                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; 
-                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); 
-                    if (mimeType == "application/pdf" || mimeType == "text/xml")
+                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;
+                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName);
+                    if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
                     {
                         fileAttactment.Add(fileName);
                         Typefilename.Add(mimeType);
@@ -83,7 +88,6 @@ namespace WebApplication1.Controllers
                             else
                             {
                                 var part = (MimePart)attachment;
-
                                 part.Content.DecodeTo(stream);
                             }
                         }
@@ -91,7 +95,7 @@ namespace WebApplication1.Controllers
                 }
                 EmailEntity.FileAttactment = string.Join(";", fileAttactment);
                 EmailEntity.Typefilename = string.Join("; ", Typefilename);
-                if(EmailEntity.FileAttactment != "")
+                if (EmailEntity.FileAttactment != "")
                 {
                     listEmail.Add(EmailEntity);
                 }
@@ -141,7 +145,7 @@ namespace WebApplication1.Controllers
             UserEntity User2 = new UserEntity("legolas15397@gmail.com", "yixhptngrwpgnwzb"); listUser.Add(User2);
             UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
             UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
-            
+
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);
@@ -176,21 +180,69 @@ namespace WebApplication1.Controllers
             getDetailEmail.Body = message.TextBody;
             var fileAttactment = new List<string>();
             var Typefilename = new List<string>();
+            var dateReceive = getDetailEmail.TimeReceive;
+            var stringdate = dateReceive.ToString("yyyyMMdd");
+            string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/";
 
             foreach (MimeEntity attachment in message.Attachments)
             {
-                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name; 
-                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); 
-                if (mimeType == "application/pdf" || mimeType == "text/xml")
+                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;
+                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName);
+                if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
                 {
                     fileAttactment.Add(fileName);
                     Typefilename.Add(mimeType);
                 }
+                if (mimeType == "application/x-zip-compressed")
+                {
+                    using (ZipArchive archive = ZipFile.Open(localFilePath + stringdate + "/" + fileName, ZipArchiveMode.Update))
+                    {
+                        foreach (var file in archive.Entries)
+                        {
+                            var fileNameinZIP = file.FullName;
+                            var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
+                            if (System.IO.File.Exists(localFilePath + stringdate + "/" + fileNameinZIP))
+                            {
+                                System.IO.File.Delete(localFilePath + stringdate + "/" + fileNameinZIP);
+                            }
+                            if (duoi == "xml" || duoi == "pdf")
+                            {
+                                fileAttactment.Add(fileNameinZIP);
+                                var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
+                            }
+                        }
+                        archive.ExtractToDirectory(localFilePath + stringdate);
+                    }
+                }
+                if (mimeType == "application/octet-stream")
+                {
+                    using (var archive = ArchiveFactory.Open(localFilePath + stringdate + "/" + fileName))
+                    {
+                        foreach (var entry in archive.Entries)
+                        {
+                            var fileNameinZIP = entry.Key;
+                            var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
+                            if (!entry.IsDirectory)
+                            {
+                                entry.WriteToDirectory(localFilePath + stringdate, new ExtractionOptions()
+                                {
+                                    ExtractFullPath = true,
+                                    Overwrite = true
+                                });
+                            }
+                            if (duoi == "xml" || duoi == "pdf")
+                            {
+                                fileAttactment.Add(fileNameinZIP);
+                                var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
+                            }
+                        }
+                    }
+                }
             }
-                getDetailEmail.FileAttactment = string.Join(";", fileAttactment);
-                getDetailEmail.Typefilename = string.Join("; ", Typefilename);
+            getDetailEmail.FileAttactment = string.Join(";", fileAttactment);
+            getDetailEmail.Typefilename = string.Join("; ", Typefilename);
 
-            return Json(new {data = getDetailEmail}, JsonRequestBehavior.AllowGet);
+            return Json(new { data = getDetailEmail }, JsonRequestBehavior.AllowGet);
         }
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {

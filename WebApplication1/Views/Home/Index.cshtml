@@ -248,53 +248,6 @@
                             <!-- /.card-footer -->
                             <div class="card-footer">
                                 <footer>
-                                    <div class="container container-footer">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <h3 class="title" style="color: blue;">Liên Hệ <br> Chúng tôi</h3>
-                                            </div>
-                                            <div class="col-8">
-                                                <div class="row position">
-                                                    <div class="position-item col-4">
-                                                        <div class="des-position">
-                                                            <div class="title-position">THỦ ĐÔ HÀ NỘI</div>
-                                                            <div class="textwidget">
-                                                                <p>06, Vũ Ngọc Phan, Q. Đống Đa, Hà Nội</p>
-                                                                <p>
-                                                                    Điện thoại: <a href="tel:0243 7761 663">1900 63 65 85</a><br> Email: <a href="mailto:info@asiasoft.com.vn">info@asiasoft.com.vn</a>
-                                                                </p>
-                                                                <p><a id="map-hn" class="btn-map" href="https://g.page/AsiaSoftJSC?share">Xem bản đồ</a></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="position-item col-4">
-                                                        <div class="des-position">
-                                                            <div class="title-position">THÀNH PHỐ HỒ CHÍ MINH</div>
-                                                            <div class="textwidget">
-                                                                <p>60 Đường Số 11 KDC Cityland, P. 10, Q. Gò Vấp, TP. HCM</p>
-                                                                <p>Điện thoại: <a href="tel:1900 636 689">1900 63 66 89</a></p>
-                                                                <p>
-                                                                    Email: <a href="mailto:info@asiasoft.com.vn">info@asiasoft.com.vn</a><br> <a id="map-hcm"
-                                                                                                                                                 class="btn-map" href="https://g.page/AsiaSoftHCM?share">Xem bản đồ</a>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="position-item col-4">
-                                                        <div class="des-position">
-                                                            <div class="title-position">THÀNH PHỐ ĐÀ NẴNG</div>
-                                                            <div class="textwidget">
-                                                                <p>168 Lý Thái Tông, P. Hòa Minh, Q. Liên Chiểu, Đà Nẵng</p>
-                                                                <p>Điện thoại<a class="hotline" href="#">: </a><a href="tel:0236 222 9308">0236 2229 308</a></p>
-                                                                <p>Email: <a href="mailto:info@asiasoft.com.vn">info@asiasoft.com.vn</a></p>
-                                                                <p><a id="map-danang" class="btn-map" href="https://goo.gl/maps/wLXNqonQgdBK56Rr8">Xem bản đồ</a></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row" id="fileAttactment" style="background-color: white"></div>
                                 </footer>
                             </div>
@@ -506,7 +459,15 @@
                                     /* '<a class="text-danger" href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +*/
                                     '</div>'
                                 )
-                            } else {
+                            } else if (split[i].split('.').pop() == "zip" || split[i].split('.').pop() == "rar") {
+                                $("#fileAttactment").append(
+                                    '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                    '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' + 
+                                    '</div>'
+                                )
+                            }
+                            else {
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +

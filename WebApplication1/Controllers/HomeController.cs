@@ -32,6 +32,8 @@ namespace WebApplication1.Controllers
         //[HttpPost]
         public async Task<ActionResult> Index(string username, string password)
         {
+            //username = "legolas15397@gmail.com";
+            //password = "yixhptngrwpgnwzb";
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -164,6 +166,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
         {
+            //username = "legolas15397@gmail.com";
+            //password = "yixhptngrwpgnwzb";
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
@@ -208,7 +212,7 @@ namespace WebApplication1.Controllers
                             if (duoi == "xml" || duoi == "pdf")
                             {
                                 fileAttactment.Add(fileNameinZIP);
-                                var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
+                                //var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
                             }
                         }
                         archive.ExtractToDirectory(localFilePath + stringdate);
@@ -220,8 +224,8 @@ namespace WebApplication1.Controllers
                     {
                         foreach (var entry in archive.Entries)
                         {
-                            var fileNameinZIP = entry.Key;
-                            var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
+                            var fileNameinRAR = entry.Key;
+                            var duoi = fileNameinRAR.Substring(fileNameinRAR.LastIndexOf(".") + 1);
                             if (!entry.IsDirectory)
                             {
                                 entry.WriteToDirectory(localFilePath + stringdate, new ExtractionOptions()
@@ -232,8 +236,8 @@ namespace WebApplication1.Controllers
                             }
                             if (duoi == "xml" || duoi == "pdf")
                             {
-                                fileAttactment.Add(fileNameinZIP);
-                                var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
+                                fileAttactment.Add(fileNameinRAR);
+                                //var NameFile = fileNameinRAR.Substring(0, fileNameinRAR.LastIndexOf('.'));
                             }
                         }
                     }
@@ -263,7 +267,6 @@ namespace WebApplication1.Controllers
         //-------------------------------đọc file XML---------------------------------------------------
         public JsonResult About(string stringdate, string fileName)
         {
-
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(filePath);

@@ -462,7 +462,7 @@
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' + 
+                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
                                     '</div>'
                                 )
                             }
@@ -474,14 +474,16 @@
                                 )
                             }
                             $(document).on("click", "#btnShowModalHDDTClick", function () {
-                                $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + split[i])
-                                    .then(function (respone) {
-                                        var dataXML = respone.data.data; console.log(dataXML)
-                                        $scope.a1 = dataXML.Certificate2.Issueser
-                                        console.log($scope.a1)
-                                    })
-                                $("#invoiceModal").modal("show");
-                            })
+                                if (split[i].split('.').pop() == "xml") {
+                                    $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + split[i])
+                                        .then(function (respone) {
+                                            var dataXML = respone.data.data; console.log(dataXML)
+                                            $scope.a1 = dataXML.Certificate2.Issueser
+                                            console.log($scope.a1)
+                                        })
+                                    $("#invoiceModal").modal("show");
+                                }
+                                })
                         }
                     });
 

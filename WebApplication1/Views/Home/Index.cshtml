@@ -424,13 +424,14 @@
     {
     <script>
         var app = angular.module("myApp", [])
-        app.controller("MyCtrl", function ($scope, $http, $compile) {
+        app.controller("MyCtrl", function ($scope, $http) {
             //lấy id từ queryString
             const vUrlParams = new URLSearchParams(window.location.search);
             var gUserName = vUrlParams.get('username');
             var gPassWord = vUrlParams.get('password');
             $("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>")
             $scope.readDetail = function (id) {
+                $(document).off("click", ".btnShowModalHDDTClick");
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
                 $http.get("/Home/getEachEmail?Id_mail=" + id + "&username=" + gUserName + "&password=" + gPassWord)
@@ -459,7 +460,7 @@
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                        /*---thẻ a này là nút show modal ---- */'<a class="btn text-danger" id="btnShowModalHDDTClick-'+ i +'"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +
+                                        /*---thẻ a này là nút show modal ---- */'<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + split[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+
                                     /* '<a class="text-danger" href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +*/
                                     '</div>'
                                 )
@@ -478,34 +479,36 @@
                                     '</div>'
                                 )
                             }
-                            $(document).on("click", "#btnShowModalHDDTClick-" + i, function () {
-                                if (split[i].split('.').pop() == "xml") {
-                                    console.log(split[i]);
-                                    $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + split[i])
-                                        .then(function (respone) {
-                                            var dataXML = respone.data.data; console.log(dataXML)
-                                            $scope.Issueser1 = dataXML.Certificate2.Issueser;
-                                            $scope.Subject = dataXML.Certificate2.Subject;
-
-                                            $scope.SellerTen = dataXML.seller.Ten;
-                                            $scope.SellerMST = dataXML.seller.MST;
-                                            $scope.SellerDChi = dataXML.seller.DChi;
-
-                                            $scope.BuyerTen = dataXML.buyer.Ten;
-                                            $scope.BuyerMST = dataXML.buyer.MST;
-                                            $scope.BuyerDChi = dataXML.buyer.DChi;
-
-                                            $scope.TCThue = dataXML.pay.TgTCThue;
-                                            $scope.TThue = dataXML.pay.TgTThue;
-                                            $scope.TTTBSo = dataXML.pay.TgTTTBSo;
-                                        })
-                                    $("#invoiceModal").modal("show");
-                                }
-                                })
                         }
-                    });
+                        $(document).on("click", ".btnShowModalHDDTClick", function () {
+                            $(this).off('click');
+                            var fileName = $(this).data("file-name");
+                            if (fileName.split('.').pop() == "xml") {
+                                console.log(fileName);
+                                $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + fileName)
+                                    .then(function (respone) {
+                                        var dataXML = respone.data.data; console.log(dataXML)
+                                        $scope.Issueser1 = dataXML.Certificate2.Issueser;
+                                        $scope.Subject = dataXML.Certificate2.Subject;
 
+                                        $scope.SellerTen = dataXML.seller.Ten;
+                                        $scope.SellerMST = dataXML.seller.MST;
+                                        $scope.SellerDChi = dataXML.seller.DChi;
+
+                                        $scope.BuyerTen = dataXML.buyer.Ten;
+                                        $scope.BuyerMST = dataXML.buyer.MST;
+                                        $scope.BuyerDChi = dataXML.buyer.DChi;
+
+                                        $scope.TCThue = dataXML.pay.TgTCThue;
+                                        $scope.TThue = dataXML.pay.TgTThue;
+                                        $scope.TTTBSo = dataXML.pay.TgTTTBSo;
+                                    })
+                                $("#invoiceModal").modal("show");
+                            }
+                        });
+                    });
             }
+
             $scope.btNoteBody_function = function () {
                 $("#modalNote").modal('show');
             };

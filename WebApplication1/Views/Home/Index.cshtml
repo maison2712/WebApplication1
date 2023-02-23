@@ -543,8 +543,7 @@
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
                                     '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                        /*---thẻ a này là nút show modal ---- */'<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + split[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+
-                                    /* '<a class="text-danger" href="/Home/About?stringdate=' + stringdate + '&fileName=' + split[i] + '"><i class= "fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</a>' +*/
+                                    '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + split[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+
                                     '</div>'
                                 )
                             } else if (split[i].split('.').pop() == "zip" || split[i].split('.').pop() == "rar") {
@@ -568,7 +567,7 @@
                             var fileName = $(this).data("file-name");
                             if (fileName.split('.').pop() == "xml") {
                                 console.log(fileName);
-                                $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + fileName)
+                                $http.get("/Home/ReadXML?stringdate=" + stringdate + "&fileName=" + fileName)
                                     .then(function (respone) {
                                         var vInvoice = respone.data.data; console.log(vInvoice)
                                         $scope.Issueser1 = vInvoice.Certificate2.Issueser;

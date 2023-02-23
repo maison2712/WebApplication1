@@ -171,6 +171,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Buyer.cs" />
+    <Compile Include="Models\FeeType.cs" />
     <Compile Include="Models\GeneralInformation.cs" />
     <Compile Include="Models\x509Certificate2.cs" />
     <Compile Include="Models\EmailEntity.cs" />

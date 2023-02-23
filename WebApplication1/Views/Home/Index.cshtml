@@ -463,7 +463,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h3 class="text-success" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
+                        <h3 id="textResult" class="text-success" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
                     </div>
                 </div>
             </div>
@@ -570,27 +570,32 @@
                                 console.log(fileName);
                                 $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + fileName)
                                     .then(function (respone) {
-                                        var vInvoice = respone.data.data; console.log(vInvoice)
-                                        $scope.Issueser1 = vInvoice.Certificate2.Issueser;
-                                        $scope.Subject = vInvoice.Certificate2.Subject;
+                                        if (respone.data.error) {
+                                            alert(respone.data.error);
+                                            $("#textResult").html(respone.data.error).removeClass("text-success").addClass("text-danger");
+                                        } else {
+                                            var vInvoice = respone.data.data; console.log(vInvoice)
+                                            $scope.Issueser1 = vInvoice.Certificate2.Issueser;
+                                            $scope.Subject = vInvoice.Certificate2.Subject;
 
-                                        $scope.SellerTen = vInvoice.seller.Ten;
-                                        $scope.SellerMST = vInvoice.seller.MST;
-                                        $scope.SellerDChi = vInvoice.seller.DChi;
+                                            $scope.SellerTen = vInvoice.seller.Ten;
+                                            $scope.SellerMST = vInvoice.seller.MST;
+                                            $scope.SellerDChi = vInvoice.seller.DChi;
 
-                                        $scope.BuyerTen = vInvoice.buyer.Ten;
-                                        $scope.BuyerMST = vInvoice.buyer.MST;
-                                        $scope.BuyerDChi = vInvoice.buyer.DChi;
+                                            $scope.BuyerTen = vInvoice.buyer.Ten;
+                                            $scope.BuyerMST = vInvoice.buyer.MST;
+                                            $scope.BuyerDChi = vInvoice.buyer.DChi;
 
-                                        $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
-                                        $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
-                                        $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
-                                        $scope.in4_NHDon = vInvoice.generalInformation.NLap;
-                                        $scope.in4_Nky = vInvoice.generalInformation.NLap;
+                                            $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
+                                            $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
+                                            $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
+                                            $scope.in4_NHDon = vInvoice.generalInformation.NLap;
+                                            $scope.in4_Nky = vInvoice.generalInformation.NLap;
 
-                                        $scope.TCThue = vInvoice.pay.TgTCThue;
-                                        $scope.TThue = vInvoice.pay.TgTThue;
-                                        $scope.ThTien = vInvoice.pay.ThTien;
+                                            $scope.TCThue = vInvoice.pay.TgTCThue;
+                                            $scope.TThue = vInvoice.pay.TgTThue;
+                                            $scope.ThTien = vInvoice.pay.ThTien;
+                                        }
                                     })
                                 $("#invoiceModal").modal("show");
                             }

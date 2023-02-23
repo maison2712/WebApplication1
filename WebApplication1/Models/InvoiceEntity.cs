@@ -13,6 +13,7 @@ namespace WebApp_ReadXML.Models
         public Buyer buyer { get; set; }
         public List<ServiceProduct> serviceProducts { get; set; }
         public Pay pay { get; set; }
+        public List<FeeType> feeType { get; set; }
         public x509Certificate2 Certificate2 { get; set; }
     }
 }

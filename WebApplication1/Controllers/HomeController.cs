@@ -266,7 +266,7 @@ namespace WebApplication1.Controllers
             return localFilePath;
         }
         //-------------------------------đọc file XML---------------------------------------------------
-        public JsonResult About(string stringdate, string fileName)
+        public JsonResult ReadXML(string stringdate, string fileName)
         {
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
             XmlDocument xmlDocument = new XmlDocument();
@@ -279,15 +279,36 @@ namespace WebApplication1.Controllers
 
             var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText;
             byte[] tmp;
-            tmp = System.Convert.FromBase64String(certificate);
+            tmp = Convert.FromBase64String(certificate);
             X509Certificate2 cer = new X509Certificate2(tmp);
 
             bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key);
+            //truy vấn node mã của cơ quan thuế
+            var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT");
+            //truy vấn ngày lập hóa đơn và ngày ký
+            var nodeNgayLap = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DLHDon/TTChung/NLap");
+            var nodeNgayKy = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DSCKS/CQT/Signature/Object/SignatureProperties/SignatureProperty/SigningTime");
 
             if (!verifiedXml)
             {
                 return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
+
             }
+            else if (nodeMCQT == null)
+            {
+                return Json(new { status = false, message = "Thiếu mã cơ quan thuế" });
+
+            }
+            //else if (nodeNgayKy == null || nodeNgayLap == null)
+            //{
+            //    return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+
+            //}
+            //else if (DateTime.Parse(nodeNgayLap.InnerText).Date != DateTime.Parse(nodeNgayKy.InnerText).Date)
+            //{
+            //    return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+
+            //}
             else
             {
                 //đọc thông tin chung
@@ -314,9 +335,12 @@ namespace WebApplication1.Controllers
                 seller.Ten = ReadLineXML(xmlDocument, "/NDHDon/NBan/Ten");
                 seller.MST = ReadLineXML(xmlDocument, "/NDHDon/NBan/MST");
                 seller.DChi = ReadLineXML(xmlDocument, "/NDHDon/NBan/DChi");
+                seller.SDThoai = ReadLineXML(xmlDocument, "/NDHDon/NBan/SDThoai");
                 seller.DCTDTu = ReadLineXML(xmlDocument, "/NDHDon/NBan/DCTDTu");
                 seller.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/STKNHang");
                 seller.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/TNHang");
+                seller.Fax = ReadLineXML(xmlDocument, "/NDHDon/NBan/Fax");
+                seller.Website = ReadLineXML(xmlDocument, "/NDHDon/NBan/Website");
                 invoice.seller = seller;
 
                 //đọc thông tin người mua
@@ -324,6 +348,12 @@ namespace WebApplication1.Controllers
                 buyer.Ten = ReadLineXML(xmlDocument, "/NDHDon/NMua/Ten");
                 buyer.MST = ReadLineXML(xmlDocument, "/NDHDon/NMua/MST");
                 buyer.DChi = ReadLineXML(xmlDocument, "/NDHDon/NMua/DChi");
+                buyer.MKHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/MKHang");
+                buyer.SDThoai = ReadLineXML(xmlDocument, "/NDHDon/NMua/SDThoai");
+                buyer.DCTDTu = ReadLineXML(xmlDocument, "/NDHDon/NMua/DCTDTu");
+                buyer.HVTNMHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/HVTNMHang");
+                buyer.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/STKNHang");
+                buyer.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/TNHang");
                 invoice.buyer = buyer;
 
                 //đọc thông tin hàng hóa dịch vụ
@@ -334,14 +364,16 @@ namespace WebApplication1.Controllers
                 {
                     var serviceProduct = new ServiceProduct();
 
-                    serviceProduct.TChat = int.Parse(ReadNodeList(xmlDocument, "TChat"));
-                    serviceProduct.STT = int.Parse(ReadNodeList(xmlDocument, "STT"));
-                    serviceProduct.THHDVu = ReadNodeList(xmlDocument, "THHDVu");
-                    serviceProduct.DVTinh = ReadNodeList(xmlDocument, "DVTinh");
-                    serviceProduct.SLuong = int.Parse(ReadNodeList(xmlDocument, "SLuong"));
-                    serviceProduct.DGia = decimal.Parse(ReadNodeList(xmlDocument, "DGia"));
-                    serviceProduct.ThTien = decimal.Parse(ReadNodeList(xmlDocument, "ThTien"));
-                    serviceProduct.TSuat = ReadNodeList(xmlDocument, "TSuat");
+                    serviceProduct.TChat = ReadNodeList(node, "TChat");
+                    serviceProduct.STT = ReadNodeList(node, "STT");
+                    serviceProduct.MHHDVu = ReadNodeList(node, "MHHDVu");
+                    serviceProduct.THHDVu = ReadNodeList(node, "THHDVu");
+                    serviceProduct.DVTinh = ReadNodeList(node, "DVTinh");
+                    serviceProduct.SLuong = ReadNodeList(node, "SLuong");
+                    serviceProduct.DGia = ReadNodeList(node, "DGia");
+                    serviceProduct.TLCKhau = ReadNodeList(node, "TLCKhau");
+                    serviceProduct.ThTien = ReadNodeList(node, "ThTien");
+                    serviceProduct.TSuat = ReadNodeList(node, "TSuat");
 
                     listServiceProduct.Add(serviceProduct);
                 }
@@ -350,13 +382,26 @@ namespace WebApplication1.Controllers
                 //đọc thông tin thanh toán
                 var pay = new Pay();
                 pay.TSuat = ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TSuat");
-                pay.ThTien = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/ThTien"));
-                pay.TThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TThue"));
-                pay.TgTCThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTCThue"));
-                pay.TgTThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTThue"));
-                pay.TgTTTBSo = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBSo"));
+                pay.ThTien = ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/ThTien");
+                pay.TThue = ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TThue");
+                pay.TgTCThue = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTCThue");
+                pay.TgTThue = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTThue");
+                pay.TTCKTMai = ReadLineXML(xmlDocument, "/NDHDon/TToan/TTCKTMai");
+                pay.TgTTTBSo = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBSo");
                 pay.TgTTTBChu = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBChu");
                 invoice.pay = pay;
+
+                //đọc thông tin Phí
+                XmlNodeList listFeeTypeNode = xmlDocument.SelectNodes("/TDiep/DLieu/HDon/DLHDon/NDHDon/TToan/DSLPhi/LPhi");
+                var listFeeType = new List<FeeType>();
+                foreach(XmlNode node in listFeeTypeNode)
+                {
+                    var feeType = new FeeType();
+                    feeType.TLPhi = ReadNodeList(node, "TLPhi");
+                    feeType.TPhi = ReadNodeList(node, "TPhi");
+                    listFeeType.Add(feeType);
+                }
+                invoice.feeType = listFeeType;
 
                 //đọc thông tin chữ ký điện tử
                 var Certificate2 = new x509Certificate2();
@@ -366,6 +411,8 @@ namespace WebApplication1.Controllers
             }
             return Json(new { data = invoice }, JsonRequestBehavior.AllowGet);
         }
+
+        //kiểm tra node đơn 
         private string ReadLineXML(XmlDocument xmlDocument, string elementXml)
         {
             string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon";
@@ -380,23 +427,18 @@ namespace WebApplication1.Controllers
             }
         }
 
-        private string ReadNodeList(XmlDocument xmlDocument, string elementXml)
+        //kiểm tra các node trong List
+        private string ReadNodeList(XmlNode node, string elementXml)
         {
-            string pathNode = "/TDiep/DLieu/HDon/DLHDon/NDHDon/DSHHDVu/HHDVu";
-            XmlNodeList listNode = xmlDocument.SelectNodes(pathNode);
-            foreach (XmlNode node in listNode)
+            var result = node[elementXml];
+            if (result == null)
             {
-                var result = node[elementXml];
-                if (result == null)
-                {
-                    return "";
-                }
-                else
-                {
-                    return result.InnerText;
-                }
+                return "";
             }
-            return null;
+            else
+            {
+                return result.InnerText;
+            }
         }
         public ActionResult Contact()
         {

@@ -8,14 +8,12 @@ namespace WebApp_ReadXML.Models
     public class Pay
     {
         public string TSuat { get; set; }
-        public decimal ThTien { get; set; }
-        public decimal TThue { get; set; }
-        public decimal TgTCThue { get; set; }
-        public decimal TgTThue { get; set; }
-        public string TLPhi { get; set; }
-        public decimal TPhi { get; set; }
-        public decimal TTCKTMai { get; set; }
-        public decimal TgTTTBSo { get; set; }
+        public string ThTien { get; set; }
+        public string TThue { get; set; }
+        public string TgTCThue { get; set; }
+        public string TgTThue { get; set; }
+        public string TTCKTMai { get; set; }
+        public string TgTTTBSo { get; set; }
         public string TgTTTBChu { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace WebApp_ReadXML.Models
 {
     public class InvoiceEntity
     {
+        public GeneralInformation generalInformation { get; set; }
         public Seller seller { get; set; }
         public Buyer buyer { get; set; }
         public List<ServiceProduct> serviceProducts { get; set; }

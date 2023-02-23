@@ -277,111 +277,144 @@
                     <h3 id="invoiceModalLabel" sstyle="margin: 0px;"><b>Hóa đơn điện tử</b></h3>
                 </div>
                 <div class="modal-body" style="background-color: #edf3f6; max-width: 100%">
-                    <div ng-app="myApp" ng-controller="MyCtrl">
-                        <div class="row py-4" style="border-radius: 25px; background-color: #edf3f6; padding: 5px 10px 5px 10px">
-                            <div class="col-md-12 mx-auto" style="display: flex">
-                                @*<div class="row">*@
-                                <div class="col-md-8" style="margin-left: 10px">
+                    <div class="row px-2" style="background-color: #edf3f6;">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                     <div class="row">
-                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
-                                            <div class="row">
-                                                <h4 class="text-info my-auto"><i class="fa-solid fa-shop fa-2xs"></i> &nbsp;<b>Đơn vị bán hàng</b></h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-11">
-                                            <div class="row">
-                                                <div class="col-3">
-                                                    <p>Đơn vị :</p>
-                                                    <p>Mã số thuế : </p>
-                                                    <p>Địa chỉ : </p>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <p><b>{{SellerTen}}</b></p>
-                                                    <p><b>{{SellerMST}}</b></p>
-                                                    <p><b>{{SellerDChi}}</b></p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-shop fa-2xs"></i> &nbsp;<b>Đơn vị bán hàng</b></h4>
                                     </div>
+                                </div>
+                                <div class="col-md-11">
                                     <div class="row">
-                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
-                                            <div class="row">
-                                                <h4 class="text-info my-auto"><i class="fa-solid fa-cart-shopping fa-2xs"></i>&nbsp; <b> Đơn vị mua hàng</b></h4>
-                                            </div>
-                                        </div>
-                                        <div style="width: fit-content">
+                                        <div class="col-4">
                                             <p>Đơn vị :</p>
                                             <p>Mã số thuế : </p>
                                             <p>Địa chỉ : </p>
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-8">
+                                            <p><b>{{SellerTen}}</b></p>
+                                            <p><b>{{SellerMST}}</b></p>
+                                            <p><b>{{SellerDChi}}</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
+                                    <div class="row">
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-cart-shopping fa-2xs"></i>&nbsp; <b> Đơn vị mua hàng</b></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>Đơn vị :</p>
+                                            <p>Mã số thuế : </p>
+                                            <p>Địa chỉ : </p>
+                                        </div>
+                                        <div class="col-md-9">
                                             <p><b>{{BuyerTen}}</b></p>
                                             <p><b>{{BuyerMST}}</b></p>
                                             <p><b>{{BuyerDChi}}</b></p>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
                                     <div class="row">
-                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
-                                            <div class="row">
-                                                <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Chữ ký số</b></h4>
-                                            </div>
-                                        </div>
-                                        <div style="width: fit-content">
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Chữ ký số</b></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="col-md-3">
                                             <p>X509SubjectName CQT: </p>
-                                            <p>X509SubjectName NBan: </p>
                                         </div>
                                         <div class="col-md-9">
                                             <p><b>{{Issueser1}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p>X509SubjectName NBan: </p>
+                                        </div>
+                                        <div class="col-md-9">
                                             <p><b>{{Subject}}</b></p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                    <div class="row text-center">
+                                        <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-11">
                                     <div class="row">
-                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
-                                            <div class="row text-center">
-                                                <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <p>Mẫu số: </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b>{{in4_MSHDon}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
                                             <p>Ký hiệu: </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b>{{in4_KHHDon}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
                                             <p>Số hóa đơn: </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b>{{in4_SHDon}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
                                             <p>Ngày hóa đơn: </p>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <p><b>{{in4_NHDon}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <p>Ngày ký: </p>
                                         </div>
                                         <div class="col-md-7">
-                                            <p><b></b></p>
-                                            <p><b></b></p>
-                                            <p><b></b></p>
-                                            <p><b></b></p>
-                                            <p><b></b></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
-                                            <div class="row d-flex justify-content-center">
-                                                <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Thông tin thanh toán</b></h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <p>Tổng tiền trước thuế :</p>
-                                            <p>Tổng thuế GTGT : </p>
-                                            <p>Tổng tiền thanh toán : </p>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <p><b>{{TCThue}}</b></p>
-                                            <p><b>{{TThue}}</b></p>
-                                            <p><b>{{TTTBSo}}</b></p>
+                                            <p><b>{{in4_Nky}}</b></p>
                                         </div>
                                     </div>
                                 </div>
-                                @*</div>*@
                             </div>
                             <div class="row">
-                                <h3 class="text-primary" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
+                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                    <div class="row d-flex justify-content-center">
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Thông tin thanh toán</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-11">
+                                <div class="row">
+                                    <p>Tổng tiền trước thuế : <b>{{TCThue}}</b></p>
+                                    <p>Tổng thuế GTGT : <b>{{TThue}}</b></p>
+                                    <p>Tổng tiền thanh toán : <b>{{ThTien}}</b></p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <h3 class="text-success" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
                     </div>
                 </div>
             </div>
@@ -488,21 +521,27 @@
                                 console.log(fileName);
                                 $http.get("/Home/About?stringdate=" + stringdate + "&fileName=" + fileName)
                                     .then(function (respone) {
-                                        var dataXML = respone.data.data; console.log(dataXML)
-                                        $scope.Issueser1 = dataXML.Certificate2.Issueser;
-                                        $scope.Subject = dataXML.Certificate2.Subject;
+                                        var vInvoice = respone.data.data; console.log(vInvoice)
+                                        $scope.Issueser1 = vInvoice.Certificate2.Issueser;
+                                        $scope.Subject = vInvoice.Certificate2.Subject;
 
-                                        $scope.SellerTen = dataXML.seller.Ten;
-                                        $scope.SellerMST = dataXML.seller.MST;
-                                        $scope.SellerDChi = dataXML.seller.DChi;
+                                        $scope.SellerTen = vInvoice.seller.Ten;
+                                        $scope.SellerMST = vInvoice.seller.MST;
+                                        $scope.SellerDChi = vInvoice.seller.DChi;
 
-                                        $scope.BuyerTen = dataXML.buyer.Ten;
-                                        $scope.BuyerMST = dataXML.buyer.MST;
-                                        $scope.BuyerDChi = dataXML.buyer.DChi;
+                                        $scope.BuyerTen = vInvoice.buyer.Ten;
+                                        $scope.BuyerMST = vInvoice.buyer.MST;
+                                        $scope.BuyerDChi = vInvoice.buyer.DChi;
 
-                                        $scope.TCThue = dataXML.pay.TgTCThue;
-                                        $scope.TThue = dataXML.pay.TgTThue;
-                                        $scope.TTTBSo = dataXML.pay.TgTTTBSo;
+                                        $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
+                                        $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
+                                        $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
+                                        $scope.in4_NHDon = vInvoice.generalInformation.NLap;
+                                        $scope.in4_Nky = vInvoice.generalInformation.NLap;
+
+                                        $scope.TCThue = vInvoice.pay.TgTCThue;
+                                        $scope.TThue = vInvoice.pay.TgTThue;
+                                        $scope.ThTien = vInvoice.pay.ThTien;
                                     })
                                 $("#invoiceModal").modal("show");
                             }

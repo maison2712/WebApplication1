@@ -271,9 +271,7 @@ namespace WebApplication1.Controllers
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(filePath);
-            string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon/NDHDon";
             var invoice = new InvoiceEntity();
-
 
             SignedXml signedXml = new SignedXml(xmlDocument);
             XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
@@ -292,39 +290,58 @@ namespace WebApplication1.Controllers
             }
             else
             {
+                //đọc thông tin chung
+                var generalIn4 = new GeneralInformation();
+                generalIn4.PBan = ReadLineXML(xmlDocument, "/TTChung/PBan");
+                generalIn4.TenHD = ReadLineXML(xmlDocument, "/TTChung/TenHD");
+                generalIn4.KHMSHDon = ReadLineXML(xmlDocument, "/TTChung/KHMSHDon");
+                generalIn4.KHHDon = ReadLineXML(xmlDocument, "/TTChung/KHHDon");
+                generalIn4.SHDon = ReadLineXML(xmlDocument, "/TTChung/SHDon");
+                generalIn4.MHSo = ReadLineXML(xmlDocument, "/TTChung/MHSo");
+                generalIn4.NLap = ReadLineXML(xmlDocument, "/TTChung/NLap");
+                generalIn4.SBKe = ReadLineXML(xmlDocument, "/TTChung/SBKe");
+                generalIn4.DVTTe = ReadLineXML(xmlDocument, "/TTChung/DVTTe");
+                generalIn4.TGia = ReadLineXML(xmlDocument, "/TTChung/TGia");
+                generalIn4.HTTToan = ReadLineXML(xmlDocument, "/TTChung/HTTToan");
+                generalIn4.MSTTCGP = ReadLineXML(xmlDocument, "/TTChung/MSTTCGP");
+                generalIn4.MSTDVNUNLHDon = ReadLineXML(xmlDocument, "/TTChung/MSTDVNUNLHDon");
+                generalIn4.TDVNUNLHDon = ReadLineXML(xmlDocument, "/TTChung/TDVNUNLHDon");
+                generalIn4.DCDVNUNLDon = ReadLineXML(xmlDocument, "/TTChung/DCDVNUNLDon");
+                invoice.generalInformation = generalIn4;
+
                 //đọc thông tin người bán
                 var seller = new Seller();
-                seller.Ten = ReadLineXML(xmlDocument, "/NBan/Ten");  
-                seller.MST = ReadLineXML(xmlDocument, "/NBan/MST"); 
-                seller.DChi = ReadLineXML(xmlDocument, "/NBan/DChi"); 
-                seller.DCTDTu = ReadLineXML(xmlDocument, "/NBan/DCTDTu");
-                seller.STKNHang = ReadLineXML(xmlDocument, "/NBan/STKNHang");
-                seller.TNHang = ReadLineXML(xmlDocument, "/NBan/TNHang");
+                seller.Ten = ReadLineXML(xmlDocument, "/NDHDon/NBan/Ten");
+                seller.MST = ReadLineXML(xmlDocument, "/NDHDon/NBan/MST");
+                seller.DChi = ReadLineXML(xmlDocument, "/NDHDon/NBan/DChi");
+                seller.DCTDTu = ReadLineXML(xmlDocument, "/NDHDon/NBan/DCTDTu");
+                seller.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/STKNHang");
+                seller.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/TNHang");
                 invoice.seller = seller;
 
                 //đọc thông tin người mua
                 var buyer = new Buyer();
-                buyer.Ten = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/Ten").InnerText;
-                buyer.MST = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/MST").InnerText;
-                buyer.DChi = xmlDocument.SelectSingleNode(pathNodeXML + "/NMua/DChi").InnerText;
+                buyer.Ten = ReadLineXML(xmlDocument, "/NDHDon/NMua/Ten");
+                buyer.MST = ReadLineXML(xmlDocument, "/NDHDon/NMua/MST");
+                buyer.DChi = ReadLineXML(xmlDocument, "/NDHDon/NMua/DChi");
                 invoice.buyer = buyer;
 
                 //đọc thông tin hàng hóa dịch vụ
-                XmlNodeList listServiceProductNode = xmlDocument.SelectNodes(pathNodeXML + "/DSHHDVu/HHDVu");
+                XmlNodeList listServiceProductNode = xmlDocument.SelectNodes("/TDiep/DLieu/HDon/DLHDon/NDHDon/DSHHDVu/HHDVu");
                 var listServiceProduct = new List<ServiceProduct>();
 
                 foreach (XmlNode node in listServiceProductNode)
                 {
                     var serviceProduct = new ServiceProduct();
 
-                    serviceProduct.TChat = int.Parse(node["TChat"].InnerText);
-                    serviceProduct.STT = int.Parse(node["STT"].InnerText);
-                    serviceProduct.THHDVu = node["THHDVu"].InnerText;
-                    serviceProduct.DVTinh = node["DVTinh"].InnerText;
-                    serviceProduct.SLuong = int.Parse(node["SLuong"].InnerText);
-                    serviceProduct.DGia = decimal.Parse(node["DGia"].InnerText);
-                    serviceProduct.ThTien = decimal.Parse(node["ThTien"].InnerText);
-                    serviceProduct.TSuat = node["TSuat"].InnerText;
+                    serviceProduct.TChat = int.Parse(ReadNodeList(xmlDocument, "TChat"));
+                    serviceProduct.STT = int.Parse(ReadNodeList(xmlDocument, "STT"));
+                    serviceProduct.THHDVu = ReadNodeList(xmlDocument, "THHDVu");
+                    serviceProduct.DVTinh = ReadNodeList(xmlDocument, "DVTinh");
+                    serviceProduct.SLuong = int.Parse(ReadNodeList(xmlDocument, "SLuong"));
+                    serviceProduct.DGia = decimal.Parse(ReadNodeList(xmlDocument, "DGia"));
+                    serviceProduct.ThTien = decimal.Parse(ReadNodeList(xmlDocument, "ThTien"));
+                    serviceProduct.TSuat = ReadNodeList(xmlDocument, "TSuat");
 
                     listServiceProduct.Add(serviceProduct);
                 }
@@ -332,13 +349,13 @@ namespace WebApplication1.Controllers
 
                 //đọc thông tin thanh toán
                 var pay = new Pay();
-                pay.TSuat = xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/TSuat").InnerText;
-                pay.ThTien = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/ThTien").InnerText);
-                pay.TThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/THTTLTSuat/LTSuat/TThue").InnerText);
-                pay.TgTCThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTCThue").InnerText);
-                pay.TgTThue = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTThue").InnerText);
-                pay.TgTTTBSo = decimal.Parse(xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBSo").InnerText);
-                pay.TgTTTBChu = xmlDocument.SelectSingleNode(pathNodeXML + "/TToan/TgTTTBChu").InnerText;
+                pay.TSuat = ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TSuat");
+                pay.ThTien = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/ThTien"));
+                pay.TThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TThue"));
+                pay.TgTCThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTCThue"));
+                pay.TgTThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTThue"));
+                pay.TgTTTBSo = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBSo"));
+                pay.TgTTTBChu = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBChu");
                 invoice.pay = pay;
 
                 //đọc thông tin chữ ký điện tử
@@ -349,9 +366,9 @@ namespace WebApplication1.Controllers
             }
             return Json(new { data = invoice }, JsonRequestBehavior.AllowGet);
         }
-        private string ReadLineXML(XmlDocument xmlDocument ,string elementXml)
+        private string ReadLineXML(XmlDocument xmlDocument, string elementXml)
         {
-            string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon/NDHDon";
+            string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon";
             var result = xmlDocument.SelectSingleNode(pathNodeXML + elementXml);
             if (result == null)
             {
@@ -361,7 +378,25 @@ namespace WebApplication1.Controllers
             {
                 return result.InnerText;
             }
+        }
 
+        private string ReadNodeList(XmlDocument xmlDocument, string elementXml)
+        {
+            string pathNode = "/TDiep/DLieu/HDon/DLHDon/NDHDon/DSHHDVu/HHDVu";
+            XmlNodeList listNode = xmlDocument.SelectNodes(pathNode);
+            foreach (XmlNode node in listNode)
+            {
+                var result = node[elementXml];
+                if (result == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return result.InnerText;
+                }
+            }
+            return null;
         }
         public ActionResult Contact()
         {

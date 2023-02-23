@@ -2,6 +2,7 @@
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
+using Microsoft.Ajax.Utilities;
 using MimeKit;
 using Org.BouncyCastle.Crypto.Macs;
 using SharpCompress.Archives;
@@ -276,7 +277,7 @@ namespace WebApplication1.Controllers
             SignedXml signedXml = new SignedXml(xmlDocument);
             XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
             signedXml.LoadXml((XmlElement)nodeList.Item(0));
-
+            
             var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText;
             byte[] tmp;
             tmp = Convert.FromBase64String(certificate);
@@ -287,8 +288,8 @@ namespace WebApplication1.Controllers
             var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT");
             //truy vấn ngày lập hóa đơn và ngày ký
             var nodeNgayLap = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DLHDon/TTChung/NLap");
-            var nodeNgayKy = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DSCKS/CQT/Signature/Object/SignatureProperties/SignatureProperty/SigningTime");
-
+            var nodeNgayKy = xmlDocument.GetElementsByTagName("SigningTime").Item(0);
+            DateTime NKy = DateTime.Parse(nodeNgayKy.InnerText).Date;
             if (!verifiedXml)
             {
                 return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
@@ -296,19 +297,19 @@ namespace WebApplication1.Controllers
             }
             else if (nodeMCQT == null)
             {
-                return Json(new { status = false, message = "Thiếu mã cơ quan thuế" });
+                return Json(new { error = "Thiếu mã cơ quan thuế" }, JsonRequestBehavior.AllowGet);
 
             }
-            //else if (nodeNgayKy == null || nodeNgayLap == null)
-            //{
-            //    return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+            else if (nodeNgayKy == null || nodeNgayLap == null)
+            {
+                return Json(new { error = "Thiếu ngày lập hoặc ngày ký" }, JsonRequestBehavior.AllowGet);
 
-            //}
-            //else if (DateTime.Parse(nodeNgayLap.InnerText).Date != DateTime.Parse(nodeNgayKy.InnerText).Date)
-            //{
-            //    return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+            }
+            else if (DateTime.Parse(nodeNgayLap.InnerText).Date != DateTime.Parse(nodeNgayKy.InnerText).Date)
+            {
+                return Json(new { error = "Ngày ký và ngày lập không hợp lệ" }, JsonRequestBehavior.AllowGet);
 
-            //}
+            }
             else
             {
                 //đọc thông tin chung
@@ -354,6 +355,7 @@ namespace WebApplication1.Controllers
                 buyer.HVTNMHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/HVTNMHang");
                 buyer.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/STKNHang");
                 buyer.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/TNHang");
+                buyer.NKy = NKy.ToString("yyyy-MM-dd");
                 invoice.buyer = buyer;
 
                 //đọc thông tin hàng hóa dịch vụ

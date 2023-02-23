@@ -16,5 +16,6 @@ namespace WebApp_ReadXML.Models
         public string HVTNMHang { get; set; }
         public string STKNHang { get; set; }
         public string TNHang { get; set; }
+        public string NKy { get; set; }
     }
 }

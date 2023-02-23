@@ -453,7 +453,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-5">
-                                        <p>Tổng tiền thanh toán : </p>
+                                        <p style="font-size: 15.5px">Tổng tiền thanh toán : </p>
                                     </div>
                                     <div class="col-md-7">
                                         <p><b>{{ThTien}}</b></p>
@@ -584,12 +584,12 @@
                                             $scope.BuyerTen = vInvoice.buyer.Ten;
                                             $scope.BuyerMST = vInvoice.buyer.MST;
                                             $scope.BuyerDChi = vInvoice.buyer.DChi;
-
+                                            
                                             $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
                                             $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
                                             $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
                                             $scope.in4_NHDon = vInvoice.generalInformation.NLap;
-                                            $scope.in4_Nky = vInvoice.generalInformation.NLap;
+                                            $scope.in4_Nky = vInvoice.buyer.NKy; 
 
                                             $scope.TCThue = vInvoice.pay.TgTCThue;
                                             $scope.TThue = vInvoice.pay.TgTThue;

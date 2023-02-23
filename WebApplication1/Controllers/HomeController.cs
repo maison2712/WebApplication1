@@ -33,8 +33,8 @@ namespace WebApplication1.Controllers
         //[HttpPost]
         public async Task<ActionResult> Index(string username, string password)
         {
-            //username = "kiemtra11062712@gmail.com";
-            //password = "ilgtrxlhaeqzkbbx";
+            username = "legolas15397@gmail.com";
+            password = "yixhptngrwpgnwzb";
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -167,8 +167,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
         {
-            //username = "kiemtra11062712@gmail.com";
-            //password = "ilgtrxlhaeqzkbbx";
+            username = "legolas15397@gmail.com";
+            password = "yixhptngrwpgnwzb";
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);

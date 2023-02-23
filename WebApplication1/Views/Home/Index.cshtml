@@ -176,6 +176,7 @@
                             </div>
                         </div>
                         <div>
+                            <!-----------------Hiện thị danh sách các thư----------------->
                             @foreach (EmailEntity item in ViewBag.listEmail)
                             {
                                 int startIndex = @item.From.IndexOf('<') + 1;
@@ -187,10 +188,11 @@
                                 <button class="btnWatch" ng-click="readDetail(@item.Id)"><i class="far fa-eye" style="color: lightseagreen;font-size:14px"></i>&nbsp; Xem hóa đơn</button>
                                 <hr />
                             }
-
+                            <!--/.Hiện thị danh sách các thư-->
                         </div>
                     </div>
                     <!-- /.col -->
+                    <!--------------------------Mở chi tiết từng thư ra để đọc--------------------------------->
                     <div id="emailDetail" class="col-md-9 Detailmail-box">
                         <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
@@ -198,7 +200,7 @@
                                 <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 63%; background-color: white;">
                                     <h3 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h3>
                                     <h6 class="text-secondary" style="font-size: 15px">
-                                        From: {{address}}
+                                        From: {{address}} 
                                         <span class="mailbox-read-time float-right">{{time}}</span>
                                     </h6>
                                 </div>
@@ -254,6 +256,7 @@
                         </div>
                         <!-- /.card -->
                     </div>
+                    <!--------------------------/. Mở chi tiết từng thư ra để đọc-------------------------------->
                     <!-- /.col -->
 
                     <hr />
@@ -354,7 +357,7 @@
                             <div class="row">
                                 <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px; ">
                                     <div class="row">
-                                        <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Chữ ký số</b></h4>
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-file-signature fa-2xs"></i>&nbsp; <b>Chữ ký số</b></h4>
                                     </div>
                                 </div>
                                 <div class="col-md-11">
@@ -471,36 +474,6 @@
     </div>
     <!---------/ Modal Hóa đơn điện tử----------->
     <!------------>
-    <div id="modalNote" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" style="transition: none;font-size: 14px;">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" style="height: 170px;">
-                <div class="modal-header">
-                    <h5 class="modal-title">Ghi sổ kế toán</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body" style="height: 68px;padding: 10px 16px;">
-                    <p style="font-weight: 600;">Ghi sổ kế toán</p>
-                    <div class="form-group-new k-form-field k-d-flex">
-                        <label>Ngày chứng từ</label>
-                        <div style="width: 140px;margin-right: 10px;">
-                            <select k-ng-model="FinancialPaper_Day_model" kendo-drop-down-list k-options="FinancialPaper_Day" class="form-control" style="height: 25px;"></select>
-                        </div>
-                        <div style="width: 160px;height: 25px;border:  0.1rem solid #36363362;border-radius: 5px;">
-                            <input ng-model="BillDay_model" k-options="BillDay_options" kendo-datepicker placeholder="yyyy-mm-dd" style="border: none;height: 23px;width: 158px;">
-                        </div>
-                        <p style="margin: 0 8px;">-</p>
-                        <div style="width: 160px;height: 25px;border:  0.1rem solid #36363362;border-radius: 5px;">
-                            <input ng-model="BillCreateDay_model" k-options="BillDay_options" kendo-datepicker placeholder="yyyy-mm-dd" style="border: none;height: 23px;width: 158px;">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="display: block;height: 50px;padding: 8px 25px;border-top: none;">
-                    <kendo-button type="button" k-options="byActions" ng-click="byActions_function()" class="btActions text-primary disabled" style="height: 27px;">&ensp; Thực hiện</kendo-button>
-                    <kendo-button type="button" k-options="btReturn" class="btNo text-primary disabled" data-dismiss="modal" style="height: 27px;">&ensp; Quay lại</kendo-button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- ./wrapper -->
 @section index
@@ -508,65 +481,73 @@
     <script>
         var app = angular.module("myApp", [])
         app.controller("MyCtrl", function ($scope, $http) {
-            //lấy id từ queryString
+            //lấy tên email và mật khẩu từ queryString
             const vUrlParams = new URLSearchParams(window.location.search);
-            var gUserName = vUrlParams.get('username');
-            var gPassWord = vUrlParams.get('password');
-            $("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>")
+            var gUserName = vUrlParams.get('username'); //tên email
+            var gPassWord = vUrlParams.get('password'); //mật khẩu
+            $("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>") //gán tên email lên "Email nhân hóa đơn"
+            //Nút đọc chi tiết từng mail một theo id
             $scope.readDetail = function (id) {
-                $(document).off("click", ".btnShowModalHDDTClick");
+                $(document).off("click", ".btnShowModalHDDTClick"); //Xóa chức năng vừa được click
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
+                //Gọi API "id, tên email, và mật khẩu" vào hàm getEachEmail để lấy ra data của từng email theo id 
                 $http.get("/Home/getEachEmail?Id_mail=" + id + "&username=" + gUserName + "&password=" + gPassWord)
                     .then(function (response) {
-                        $scope.emailDetail = response.data.data; console.log($scope.emailDetail)
+                        $scope.emailDetail = response.data.data; console.log($scope.emailDetail) 
                         $scope.subject = $scope.emailDetail.Subject;
                         $scope.from = $scope.emailDetail.From;
                         var time = $scope.emailDetail.TimeReceive;
                         $scope.to = $scope.emailDetail.To;
                         $scope.FileAttactment = $scope.emailDetail.FileAttactment;
                         $scope.Typefilename = $scope.emailDetail.Typefilename;
+                        //Định dạng lại thời gian nhận email
                         const replaced = time.replace(/\D/g, '');
                         let numTime;
                         if (replaced !== '') {
                             numTime = Number(replaced);
                         }
-                        var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, "");
+                        //-Định dạng lại thời gian nhận email-//
+                        var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, ""); //Định dạng ngày tháng nhận thư theo dạng (yyyyMMdd)
+                        //Tách tên của người dùng email và địa chỉ email của chủ sở hữu
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
                         $scope.nameEmail = match[1];
                         $scope.address = match[2];
-                        $scope.time = new Date(numTime).toLocaleString();
-                        let split = $scope.FileAttactment.split(";");
-                        for (let i = 0; i < split.length; i++) {
-                            if (split[i].split('.').pop() == "xml") {
+                        //-Tách tên của người dùng email và địa chỉ email của chủ sở hữu-//
+                        $scope.time = new Date(numTime).toLocaleString(); // định dạng ngày tháng nhận thư để hiển thị vào form chi tiết email
+                        let listFileName = $scope.FileAttactment.split(";"); 
+                        for (let i = 0; i < listFileName.length; i++) {
+                            if (listFileName[i].split('.').pop() == "xml") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
-                                    '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + split[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
+                                    '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+ //Nút xem file XML
                                     '</div>'
                                 )
-                            } else if (split[i].split('.').pop() == "zip" || split[i].split('.').pop() == "rar") {
+                            } else if (listFileName[i].split('.').pop() == "zip" || listFileName[i].split('.').pop() == "rar") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
                                     '</div>'
                                 )
                             }
                             else {
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + split[i] + '">' + split[i] + '</a>' +
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
                                     '</div>'
                                 )
                             }
                         }
+                        //Hàm sử lý sự kiện Click cho nút "Xem hóa đơn" để hiện thị nội dung file XML ra MODAL
                         $(document).on("click", ".btnShowModalHDDTClick", function () {
                             $(this).off('click');
                             var fileName = $(this).data("file-name");
                             if (fileName.split('.').pop() == "xml") {
                                 console.log(fileName);
+                                //Gọi API  để đọc file XML và lấy ra thông tin hóa đơn theo ngày nhận thư và tên file 
                                 $http.get("/Home/ReadXML?stringdate=" + stringdate + "&fileName=" + fileName)
                                     .then(function (respone) {
                                         if (respone.data.error) {
@@ -574,23 +555,28 @@
                                             $("#textResult").html(respone.data.error).removeClass("text-success").addClass("text-danger");
                                         } else {
                                             var vInvoice = respone.data.data; console.log(vInvoice)
-                                            $scope.Issueser1 = vInvoice.Certificate2.Issueser;
+                                            //hiện thị thông tin Chữ ký số
+                                            $scope.Issueser1 = vInvoice.Certificate2.Issueser; 
                                             $scope.Subject = vInvoice.Certificate2.Subject;
 
+                                            //hiện thị thông tin người bán
                                             $scope.SellerTen = vInvoice.seller.Ten;
                                             $scope.SellerMST = vInvoice.seller.MST;
                                             $scope.SellerDChi = vInvoice.seller.DChi;
 
+                                            //hiển thị thông tin người mua
                                             $scope.BuyerTen = vInvoice.buyer.Ten;
                                             $scope.BuyerMST = vInvoice.buyer.MST;
                                             $scope.BuyerDChi = vInvoice.buyer.DChi;
-                                            
+                                            $scope.in4_Nky = vInvoice.buyer.NKy;
+
+                                            //hiện thị thông tin đã kiểm tra
                                             $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
                                             $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
                                             $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
                                             $scope.in4_NHDon = vInvoice.generalInformation.NLap;
-                                            $scope.in4_Nky = vInvoice.buyer.NKy; 
-
+                                             
+                                            //hiện thị thông tin thanh toán
                                             $scope.TCThue = vInvoice.pay.TgTCThue;
                                             $scope.TThue = vInvoice.pay.TgTThue;
                                             $scope.ThTien = vInvoice.pay.ThTien;
@@ -601,12 +587,6 @@
                         });
                     });
             }
-
-            $scope.btNoteBody_function = function () {
-                $("#modalNote").modal('show');
-            };
-
-            //--- click hiển thị modal Hóa Đơn Điện Tử
             
             $scope.logout = function () {
                 window.location.href = "/Home/Logout";

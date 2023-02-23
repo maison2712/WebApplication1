@@ -31,11 +31,10 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
+        //Hàm hiện thị ở trang Index
         //[HttpPost]
         public async Task<ActionResult> Index(string username, string password)
         {
-            username = "legolas15397@gmail.com";
-            password = "yixhptngrwpgnwzb";
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -47,8 +46,6 @@ namespace WebApplication1.Controllers
                 mailClient.Connect("imap.gmail.com", 993);
                 mailClient.Authenticate(username, password);
             }
-
-            //mailClient.Authenticate("pha170320@gmail.com", "ryarooxkojsnqybd");
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -108,25 +105,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        static Imap4Folder FindFolder(string folderPath, Imap4Folder[] folders)
-        {
-            int count = folders.Length;
-            for (int i = 0; i < count; i++)
-            {
-                Imap4Folder folder = folders[i];
-                if (string.Compare(folder.LocalPath, folderPath, true) == 0)
-                {
-                    return folder;
-                }
-                folder = FindFolder(folderPath, folder.SubFolders);
-                if (folder != null)
-                {
-                    return folder;
-                }
-            }
-            // No folder found
-            return null;
-        }
+        //Hàm tải file 
         [HttpGet]
         public ActionResult GetFile(string fileName)
         {
@@ -140,6 +119,8 @@ namespace WebApplication1.Controllers
             }
             return null;
         }
+
+        //Hàm kiểm tra tài khoản người dùng
         [HttpGet]
         public JsonResult validateUser(string username, string password)
         {
@@ -165,11 +146,11 @@ namespace WebApplication1.Controllers
             }
             return Json(new { error = "Incorrect username or password" }, JsonRequestBehavior.AllowGet);
         }
+
+        //Hàm lấy nội dung chi tiết mail theo Id
         [HttpGet]
         public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
         {
-            username = "legolas15397@gmail.com";
-            password = "yixhptngrwpgnwzb";
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
             mailClient.Connect("imap.gmail.com", 993);
@@ -250,6 +231,8 @@ namespace WebApplication1.Controllers
 
             return Json(new { data = getDetailEmail }, JsonRequestBehavior.AllowGet);
         }
+
+        //Hàm lấy theo khoảng ngày
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
@@ -266,30 +249,31 @@ namespace WebApplication1.Controllers
             }
             return localFilePath;
         }
-        //-------------------------------đọc file XML---------------------------------------------------
+
+        //-------------------------------Đọc file XML---------------------------------------------------
         public JsonResult ReadXML(string stringdate, string fileName)
         {
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(filePath);
-            var invoice = new InvoiceEntity();
+            var invoice = new InvoiceEntity(); //Khai báo đối tượng hóa đơn
 
             SignedXml signedXml = new SignedXml(xmlDocument);
-            XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature");
+            XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature"); //Truy vấn đến Tag Signature
             signedXml.LoadXml((XmlElement)nodeList.Item(0));
             
-            var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText;
+            var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText; 
             byte[] tmp;
             tmp = Convert.FromBase64String(certificate);
             X509Certificate2 cer = new X509Certificate2(tmp);
 
-            bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key);
+            bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key); //kiểm tra chữ ký số
             //truy vấn node mã của cơ quan thuế
-            var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT");
+            var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT"); //Truy vấn đến thẻ Mã Cơ quan thuế
             //truy vấn ngày lập hóa đơn và ngày ký
             var nodeNgayLap = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DLHDon/TTChung/NLap");
             var nodeNgayKy = xmlDocument.GetElementsByTagName("SigningTime").Item(0);
-            DateTime NKy = DateTime.Parse(nodeNgayKy.InnerText).Date;
+            DateTime NKy = DateTime.Parse(nodeNgayKy.InnerText).Date; //Định dạng ngày đăng ký
             if (!verifiedXml)
             {
                 return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
@@ -449,11 +433,14 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        //Hàm Đăng nhập
         //    [HttpPost]
         public ActionResult Login()
         {
             return View();
         }
+
+        //Hàm đăng xuất
         public ActionResult Logout()
         {
             Session["keySession"] = null;

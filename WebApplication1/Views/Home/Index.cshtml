@@ -273,7 +273,7 @@
     <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="transition: none;font-size: 16px">
         <div class="modal-dialog modal-lg" style="max-width: 70%" role="document">
             <div class="modal-content">
-                <div class="text-center text-info m-3">
+                <div class="text-center text-info mt-2">
                     <h3 id="invoiceModalLabel" sstyle="margin: 0px;"><b>Hóa đơn điện tử</b></h3>
                 </div>
                 <div class="modal-body" style="background-color: #edf3f6; max-width: 100%">
@@ -287,15 +287,29 @@
                                 </div>
                                 <div class="col-md-11">
                                     <div class="row">
-                                        <div class="col-4">
-                                            <p>Đơn vị :</p>
-                                            <p>Mã số thuế : </p>
-                                            <p>Địa chỉ : </p>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p>Đơn vị :</p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p><b>{{SellerTen}}</b></p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <p><b>{{SellerTen}}</b></p>
-                                            <p><b>{{SellerMST}}</b></p>
-                                            <p><b>{{SellerDChi}}</b></p>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p>Mã số thuế : </p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p><b>{{SellerMST}}</b></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p>Địa chỉ : </p>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <p><b>{{SellerDChi}}</b></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -308,15 +322,31 @@
                                 </div>
                                 <div class="col-md-11">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <p>Đơn vị :</p>
-                                            <p>Mã số thuế : </p>
-                                            <p>Địa chỉ : </p>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <p><b>{{BuyerTen}}</b></p>
-                                            <p><b>{{BuyerMST}}</b></p>
-                                            <p><b>{{BuyerDChi}}</b></p>
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <p>Đơn vị :</p>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p><b>{{BuyerTen}}</b></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <p>Mã số thuế : </p>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p><b>{{BuyerMST}}</b></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <p>Địa chỉ : </p>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <p><b>{{BuyerDChi}}</b></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -388,7 +418,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <p>Ngày ký: </p>
                                         </div>
                                         <div class="col-md-7">
@@ -406,9 +436,28 @@
                             </div>
                             <div class="col-md-11">
                                 <div class="row">
-                                    <p>Tổng tiền trước thuế : <b>{{TCThue}}</b></p>
-                                    <p>Tổng thuế GTGT : <b>{{TThue}}</b></p>
-                                    <p>Tổng tiền thanh toán : <b>{{ThTien}}</b></p>
+                                    <div class="col-md-5">
+                                        <p>Tổng tiền trước thuế : </p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p><b>{{TCThue}}</b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <p>Tổng thuế GTGT : </p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p><b>{{TThue}}</b></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <p>Tổng tiền thanh toán : </p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p><b>{{ThTien}}</b></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

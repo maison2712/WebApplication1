@@ -279,14 +279,34 @@ namespace WebApplication1.Controllers
 
             var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText;
             byte[] tmp;
-            tmp = System.Convert.FromBase64String(certificate);
+            tmp = Convert.FromBase64String(certificate);
             X509Certificate2 cer = new X509Certificate2(tmp);
 
             bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key);
+            //truy vấn node mã của cơ quan thuế
+            var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT");
+            //truy vấn ngày lập hóa đơn và ngày ký
+            var nodeNgayLap = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT");
+            var nodeNgayKy = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DSCKS/CQT/Signature/Object/SignatureProperties/SignatureProperty/SigningTime");
 
             if (!verifiedXml)
             {
                 return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
+
+            }
+            else if(nodeMCQT == null ){
+                return Json(new { status = false, message = "Thiếu mã cơ quan thuế" });
+
+            }
+            else if (nodeNgayKy == null || nodeNgayLap == null)
+            {
+                return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+
+            }
+            else if(DateTime.Parse(nodeNgayLap.InnerText).Date != DateTime.Parse(nodeNgayKy.InnerText).Date)
+            {
+                return Json(new { status = false, message = "Ngày ký và ngày lập không hợp lệ" });
+
             }
             else
             {
@@ -314,9 +334,12 @@ namespace WebApplication1.Controllers
                 seller.Ten = ReadLineXML(xmlDocument, "/NDHDon/NBan/Ten");
                 seller.MST = ReadLineXML(xmlDocument, "/NDHDon/NBan/MST");
                 seller.DChi = ReadLineXML(xmlDocument, "/NDHDon/NBan/DChi");
+                seller.SDThoai = ReadLineXML(xmlDocument, "/NDHDon/NBan/SDThoai");
                 seller.DCTDTu = ReadLineXML(xmlDocument, "/NDHDon/NBan/DCTDTu");
                 seller.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/STKNHang");
                 seller.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NBan/TNHang");
+                seller.Fax = ReadLineXML(xmlDocument, "/NDHDon/NBan/Fax");
+                seller.Website = ReadLineXML(xmlDocument, "/NDHDon/NBan/Website");
                 invoice.seller = seller;
 
                 //đọc thông tin người mua
@@ -324,6 +347,12 @@ namespace WebApplication1.Controllers
                 buyer.Ten = ReadLineXML(xmlDocument, "/NDHDon/NMua/Ten");
                 buyer.MST = ReadLineXML(xmlDocument, "/NDHDon/NMua/MST");
                 buyer.DChi = ReadLineXML(xmlDocument, "/NDHDon/NMua/DChi");
+                buyer.MKHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/MKHang");
+                buyer.SDThoai = ReadLineXML(xmlDocument, "/NDHDon/NMua/SDThoai");
+                buyer.DCTDTu = ReadLineXML(xmlDocument, "/NDHDon/NMua/DCTDTu");
+                buyer.HVTNMHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/HVTNMHang");
+                buyer.STKNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/STKNHang");
+                buyer.TNHang = ReadLineXML(xmlDocument, "/NDHDon/NMua/TNHang");
                 invoice.buyer = buyer;
 
                 //đọc thông tin hàng hóa dịch vụ
@@ -336,10 +365,12 @@ namespace WebApplication1.Controllers
 
                     serviceProduct.TChat = int.Parse(ReadNodeList(xmlDocument, "TChat"));
                     serviceProduct.STT = int.Parse(ReadNodeList(xmlDocument, "STT"));
+                    serviceProduct.MHHDVu = ReadNodeList(xmlDocument, "MHHDVu");
                     serviceProduct.THHDVu = ReadNodeList(xmlDocument, "THHDVu");
                     serviceProduct.DVTinh = ReadNodeList(xmlDocument, "DVTinh");
                     serviceProduct.SLuong = int.Parse(ReadNodeList(xmlDocument, "SLuong"));
                     serviceProduct.DGia = decimal.Parse(ReadNodeList(xmlDocument, "DGia"));
+                    serviceProduct.TLCKhau = decimal.Parse(ReadNodeList(xmlDocument, "TLCKhau"));
                     serviceProduct.ThTien = decimal.Parse(ReadNodeList(xmlDocument, "ThTien"));
                     serviceProduct.TSuat = ReadNodeList(xmlDocument, "TSuat");
 
@@ -354,6 +385,9 @@ namespace WebApplication1.Controllers
                 pay.TThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/THTTLTSuat/LTSuat/TThue"));
                 pay.TgTCThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTCThue"));
                 pay.TgTThue = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTThue"));
+                pay.TLPhi = ReadLineXML(xmlDocument, "/NDHDon/TToan/TLPhi");
+                pay.TPhi = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TPhi"));
+                pay.TTCKTMai = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TTCKTMai"));
                 pay.TgTTTBSo = decimal.Parse(ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBSo"));
                 pay.TgTTTBChu = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBChu");
                 invoice.pay = pay;

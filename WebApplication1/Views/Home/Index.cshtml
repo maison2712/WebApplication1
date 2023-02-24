@@ -159,7 +159,7 @@
                                 <ul class="nav navbar-nav navbar-right" style="flex-direction: row; justify-content: flex-end; ">
                                     <li style="padding: 20px 4px">
                                         <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
-                                            <h5 class="m-auto"><i style="font-size:22px" class="fa-solid fa-rotate-right"></i></h5>
+                                            <h4 class="m-auto"><i class="fa-solid fa-rotate-right"></i></h4>
                                         </button>
                                     </li>
                                     <li style="padding: 20px 4px ">
@@ -197,7 +197,7 @@
                         <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
                             <div class="card-body p-0">
-                                <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 63%; background-color: white;">
+                                <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 60.5%; background-color: white;">
                                     <h3 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h3>
                                     <h6 class="text-secondary" style="font-size: 15px">
                                         From: {{address}} 
@@ -280,7 +280,7 @@
                     <h3 id="invoiceModalLabel" sstyle="margin: 0px;"><b>Hóa đơn điện tử</b></h3>
                 </div>
                 <div class="modal-body" style="background-color: #edf3f6; max-width: 100%">
-                    <div class="row px-2" style="background-color: #edf3f6;">
+                    <div class="row px-3" style="background-color: #edf3f6;">
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
@@ -382,12 +382,12 @@
                         </div>
                         <div class="col-md-4">
                             <div class="row">
-                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                <div class="col-md-12 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                     <div class="row text-center">
                                         <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
                                     </div>
                                 </div>
-                                <div class="col-md-11">
+                                <div class="col-md-12">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <p>Mẫu số: </p>
@@ -431,13 +431,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-11 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
+                                <div class="col-md-12 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
                                     <div class="row d-flex justify-content-center">
                                         <h4 class="text-info my-auto"><i class="fa-solid fa-money-check-dollar fa-2xs"></i>&nbsp; <b>Thông tin thanh toán</b></h4>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-11">
+                            <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-5">
                                         <p>Tổng tiền trước thuế : </p>
@@ -466,7 +466,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <h3 id="textResult" class="text-success" style="font-weight: bold;text-align: center;">Thư hợp lệ</h3>
+                        <h3 id="textResult" class="text-success" style="text-align: center;">Chứng thư hợp lệ!</h3>
                     </div>
                 </div>
             </div>
@@ -491,7 +491,7 @@
                 $(document).off("click", ".btnShowModalHDDTClick"); //Xóa chức năng vừa được click
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
-                //Gọi API "id, tên email, và mật khẩu" vào hàm getEachEmail để lấy ra data của từng email theo id 
+                //Gọi API để lấy ra data của từng email theo id
                 $http.get("/Home/getEachEmail?Id_mail=" + id + "&username=" + gUserName + "&password=" + gPassWord)
                     .then(function (response) {
                         $scope.emailDetail = response.data.data; console.log($scope.emailDetail) 
@@ -509,11 +509,11 @@
                         }
                         //-Định dạng lại thời gian nhận email-//
                         var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, ""); //Định dạng ngày tháng nhận thư theo dạng (yyyyMMdd)
-                        //Tách tên của người dùng email và địa chỉ email của chủ sở hữu
+                        //Tách tên của người dùng email và địa chỉ email 
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
                         $scope.nameEmail = match[1];
                         $scope.address = match[2];
-                        //-Tách tên của người dùng email và địa chỉ email của chủ sở hữu-//
+                        
                         $scope.time = new Date(numTime).toLocaleString(); // định dạng ngày tháng nhận thư để hiển thị vào form chi tiết email
                         let listFileName = $scope.FileAttactment.split(";"); 
                         for (let i = 0; i < listFileName.length; i++) {
@@ -521,7 +521,7 @@
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API truyền từng tên file vào hàm GetFile để tải file
                                     '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+ //Nút xem file XML
                                     '</div>'
                                 )
@@ -529,14 +529,14 @@
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
                                     '</div>'
                                 )
                             }
                             else {
                                 $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
                                     '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile đẻ tải file
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
                                     '</div>'
                                 )
                             }
@@ -577,9 +577,9 @@
                                             $scope.in4_NHDon = vInvoice.generalInformation.NLap;
                                              
                                             //hiện thị thông tin thanh toán
-                                            $scope.TCThue = vInvoice.pay.TgTCThue;
-                                            $scope.TThue = vInvoice.pay.TgTThue;
-                                            $scope.ThTien = vInvoice.pay.ThTien;
+                                            $scope.TCThue = formatter.format(vInvoice.pay.TgTCThue);
+                                            $scope.TThue = formatter.format(vInvoice.pay.TgTThue);
+                                            $scope.ThTien = formatter.format(vInvoice.pay.ThTien);
                                         }
                                     })
                                 $("#invoiceModal").modal("show");
@@ -587,6 +587,11 @@
                         });
                     });
             }
+            const formatter = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            });
+
             
             $scope.logout = function () {
                 window.location.href = "/Home/Logout";

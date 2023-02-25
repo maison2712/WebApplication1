@@ -89,7 +89,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="#" class="brand-link">
             <img src="~/Image/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
@@ -125,7 +125,7 @@
                         with font-awesome or any other icon font library -->
 
                     <li class="nav-item menu-open">
-                        <a href="../mailbox/read-mail.html" class="nav-link active">
+                        <a href="#" class="nav-link active">
                             <i class="nav-icon far fa-envelope"></i>
                             <p>
                                 Hộp thư
@@ -145,21 +145,18 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-
                 <div class="row">
                     <div class="col-md-3 mail-box">
                         <div class="row" style="border-bottom: 1px solid lightgray;height:80px">
-                            <div class="col-md-6" style="display: flex; align-items: center; justify-content: center;">
-                                <i class="fa-regular fa-envelope text-danger fa-xl"></i>&emsp;
-                                <h3 style="font-weight: bolder; margin: 0px">
-                                    Hộp thư
-                                </h3>
+                            <div class="col-md-6" style="display: flex; align-items: center;">
+                                <i class="fa-regular fa-envelope text-danger fa-xl ml-2"></i>&ensp;
+                                <h3 style="font-weight: bolder; margin: 0px">Hộp thư</h3>
                             </div>
                             <div class="col-md-6" style="display: flex; justify-content: center; align-items: center">
                                 <ul class="nav navbar-nav navbar-right" style="flex-direction: row; justify-content: flex-end; ">
                                     <li style="padding: 20px 4px">
-                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb">
-                                            <h4 class="m-auto"><i class="fa-solid fa-rotate-right"></i></h4>
+                                        <button id="btnControlMailBox_Reload" class="btn rounded-circle" style="background-color: #e4e6eb" >
+                                            <h5 class="m-auto"><i class="fa-solid fa-rotate-right"></i></h5>
                                         </button>
                                     </li>
                                     <li style="padding: 20px 4px ">
@@ -197,10 +194,10 @@
                         <div class="card card-primary card-outline" style="">
                             <!-- /.card-header -->
                             <div class="card-body p-0">
-                                <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 60.5%; background-color: white;">
+                                <div class="mailbox-read-info" style="position: fixed; top: 94px; width: 63.4%; background-color: white;">
                                     <h3 style="font-weight: bold;font-size: 28px;"><span style="color: dodgerblue">Tiêu đề:</span> {{subject}}</h3>
                                     <h6 class="text-secondary" style="font-size: 15px">
-                                        From: {{address}} 
+                                        From: {{address}}
                                         <span class="mailbox-read-time float-right">{{time}}</span>
                                     </h6>
                                 </div>
@@ -208,49 +205,24 @@
                                 <!-- /.mailbox-controls -->
                                 <div class="mailbox-read-message" style="margin-top: 100px">
                                     <p>------------------------------Forwarded Mesage------------------------------</p>
-
-                                    <p>
-                                        <span style="font-weight: bold;">Subject: </span>{{subject}}
-                                    </p>
-
-                                    <p>
-                                        <span style="font-weight: bold;">Date: </span>{{time}}
-                                    </p>
-
-                                    <p>
-                                        <span style="font-weight: bold;">From: </span><a href="{{address}}">{{address}}</a>
-                                    </p>
-
-                                    <p>
-                                        <span style="font-weight: bold;">Reply-To: </span><a href="{{to}}">{{to}}</a>
-                                    </p>
-
-                                    <p><span style="font-weight: bold;">To: </span><a href="{{to}}">{{to}}</a></p>
+                                    <p><span style="font-weight: bold;">Subject: </span>{{subject}}</p>
+                                    <p><span style="font-weight: bold;">Date: </span>{{time}}</p>
+                                    <p><span style="font-weight: bold;">From: </span><a href="#">{{address}}</a> </p>
+                                    <p><span style="font-weight: bold;">Reply-To: </span><a href="#">{{to}}</a></p>
+                                    <p><span style="font-weight: bold;">To: </span><a href="#">{{to}}</a></p>
+                                    <p><span style="font-weight: bold;">File: </span></p>
                                 </div>
                                 <!-- /.mailbox-read-message -->
                             </div>
                             <!-- /.card-body -->
+                            <!-- card-footer -->
                             <div class="card-footer bg-white">
-                                <div style="width: 100%;height: 60px;background-color: rgb(0, 119, 255);color: white;font-size: 30px;display: flex;align-items: center;padding-left: 20px;">ASIA SOFT thông báo hóa đơn điện tử cho khách hàng</div>
-                                <div style="margin-left: 50px;">
-                                    <p style="font-weight: bold;margin-top: 20px;">Kính gửi: </p>
-                                    <p>Ban tài chính thông báo đã gửi hóa đơn tài chính (theo hình thức hóa đơn điện tử) cho khách hàng với các thông tin như sau: </p>
-                                    <ul>
-                                        <li>Số hóa đơn: <span style="font-weight: bold;"></span></li>
-                                        <li>Mẫu ra số hóa đơn: <span style="font-weight: bold;"></span></li>
-                                        <li>Ký hiệu hóa đơn: <span style="font-weight: bold;"></span></li>
-                                    </ul>
-                                    <p>Chi tiết các file đính kèm.</p>
-                                    <p>Mọi vướng mắc xin liên hệ trực tiếp với kế toán văn phòng để được giải đáp.</p>
-                                    <br />
-                                    <p style="margin-top: 50px;">Trân trọng kính chào!</p>
+                                <div>
+                                    <footer>
+                                        <div class="row" id="fileAttactment" style="background-color: white"></div>
+                                        <div id="file-message" class="row text-danger text-center" style="display: none;"><h6>Thư không đính kèm file có định dạng ".xml"!</h6></div>
+                                    </footer>
                                 </div>
-                            </div>
-                            <!-- /.card-footer -->
-                            <div class="card-footer">
-                                <footer>
-                                    <div class="row" id="fileAttactment" style="background-color: white"></div>
-                                </footer>
                             </div>
                             <!-- /.card-footer -->
                         </div>
@@ -258,20 +230,12 @@
                     </div>
                     <!--------------------------/. Mở chi tiết từng thư ra để đọc-------------------------------->
                     <!-- /.col -->
-
-                    <hr />
                 </div>
-                <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
     <!------------- Modal Hóa Đơn Điện Tử ------------------>
     <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="transition: none;font-size: 16px">
         <div class="modal-dialog modal-lg" style="max-width: 70%" role="document">
@@ -279,7 +243,7 @@
                 <div class="text-center text-info mt-2">
                     <h3 id="invoiceModalLabel" sstyle="margin: 0px;"><b>Hóa đơn điện tử</b></h3>
                 </div>
-                <div class="modal-body" style="background-color: #edf3f6; max-width: 100%">
+                <div class="modal-body" style="background-color: #edf3f6; max-width: 100%; border-radius: 5px;">
                     <div class="row px-3" style="background-color: #edf3f6;">
                         <div class="col-md-8">
                             <div class="row">
@@ -363,7 +327,7 @@
                                 <div class="col-md-11">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <p>X509SubjectName CQT: </p>
+                                            <p>Cơ quan thuế: </p>
                                         </div>
                                         <div class="col-md-9">
                                             <p><b>{{Issueser1}}</b></p>
@@ -371,7 +335,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <p>X509SubjectName NBan: </p>
+                                            <p>Người bán: </p>
                                         </div>
                                         <div class="col-md-9">
                                             <p><b>{{Subject}}</b></p>
@@ -383,8 +347,8 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <div class="col-md-12 mb-4" style="background-color: #d0e6f7; border-radius: 10px;">
-                                    <div class="row text-center">
-                                        <h4 class="text-info my-auto"><b>Đã kiểm tra</b></h4>
+                                    <div class="row">
+                                        <h4 class="text-info my-auto"><i class="fa-solid fa-check-double fa-2xs"></i>&nbsp; <b>Đã kiểm tra</b></h4>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -410,6 +374,14 @@
                                         </div>
                                         <div class="col-md-7">
                                             <p><b>{{in4_SHDon}}</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <p>Mã cơ quan thuế: </p>
+                                        </div>
+                                        <div class="col-md-7" style="word-wrap: break-word;">
+                                            <p><b>{{MCQT}}</b></p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -473,7 +445,6 @@
         </div>
     </div>
     <!---------/ Modal Hóa đơn điện tử----------->
-    <!------------>
 </div>
 <!-- ./wrapper -->
 @section index
@@ -482,17 +453,18 @@
         var app = angular.module("myApp", [])
         app.controller("MyCtrl", function ($scope, $http) {
             //lấy tên email và mật khẩu từ queryString
-            const vUrlParams = new URLSearchParams(window.location.search);
-            var gUserName = vUrlParams.get('username'); //tên email
-            var gPassWord = vUrlParams.get('password'); //mật khẩu
-            $("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>") //gán tên email lên "Email nhân hóa đơn"
+            //const vUrlParams = new URLSearchParams(window.location.search);
+            //var gUserName = vUrlParams.get('username'); //tên email
+            //var gPassWord = vUrlParams.get('password'); //mật khẩu
+            //$("#emailNameOwner").html("<a href=" + gUserName + ">" + gUserName + "</a>") //gán tên email lên "Email nhân hóa đơn"
+
             //Nút đọc chi tiết từng mail một theo id
             $scope.readDetail = function (id) {
                 $(document).off("click", ".btnShowModalHDDTClick"); //Xóa chức năng vừa được click
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
-                //Gọi API để lấy ra data của từng email theo id
-                $http.get("/Home/getEachEmail?Id_mail=" + id + "&username=" + gUserName + "&password=" + gPassWord)
+                //Gọi API để lấy ra data của từng mail theo id
+                $http.get("/Home/getEachEmail?Id_mail=" + id/* + "&username=" + gUserName + "&password=" + gPassWord*/)
                     .then(function (response) {
                         $scope.emailDetail = response.data.data; console.log($scope.emailDetail) 
                         $scope.subject = $scope.emailDetail.Subject;
@@ -501,101 +473,122 @@
                         $scope.to = $scope.emailDetail.To;
                         $scope.FileAttactment = $scope.emailDetail.FileAttactment;
                         $scope.Typefilename = $scope.emailDetail.Typefilename;
-                        //Định dạng lại thời gian nhận email
+                        //Định dạng lại thời gian nhận mail
                         const replaced = time.replace(/\D/g, '');
                         let numTime;
                         if (replaced !== '') {
                             numTime = Number(replaced);
                         }
-                        //-Định dạng lại thời gian nhận email-//
+                        //-Định dạng lại thời gian nhận mail-//
                         var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, ""); //Định dạng ngày tháng nhận thư theo dạng (yyyyMMdd)
-                        //Tách tên của người dùng email và địa chỉ email 
+                        //Tách tên của người dùng mail và địa chỉ mail 
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
                         $scope.nameEmail = match[1];
                         $scope.address = match[2];
                         
-                        $scope.time = new Date(numTime).toLocaleString(); // định dạng ngày tháng nhận thư để hiển thị vào form chi tiết email
-                        let listFileName = $scope.FileAttactment.split(";"); 
+                        $scope.time = new Date(numTime).toLocaleString(); // định dạng ngày tháng nhận thư để hiển thị vào form chi tiết mail
+                        let listFileName = $scope.FileAttactment.split(";");
+                        var vCheckFile = false;
                         for (let i = 0; i < listFileName.length; i++) {
                             if (listFileName[i].split('.').pop() == "xml") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                    '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API truyền từng tên file vào hàm GetFile để tải file
-                                    '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+ //Nút xem file XML
+                                        '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
+                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API truyền từng tên file vào hàm GetFile để tải file
+                                        '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+ //Nút xem file XML
                                     '</div>'
                                 )
-                            } else if (listFileName[i].split('.').pop() == "zip" || listFileName[i].split('.').pop() == "rar") {
+                                vCheckFile = true;
+                            }
+                            else if (listFileName[i].split('.').pop() == "zip" || listFileName[i].split('.').pop() == "rar") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                    '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                        '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
+                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
                                     '</div>'
                                 )
                             }
                             else {
-                                $("#fileAttactment").append('<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                    '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
-                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                $("#fileAttactment").append(
+                                    '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                        '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
+                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
                                     '</div>'
                                 )
                             }
                         }
-                        //Hàm sử lý sự kiện Click cho nút "Xem hóa đơn" để hiện thị nội dung file XML ra MODAL
+                        //
+                        if (vCheckFile == false) {
+                            $("#file-message").css("display", "block");
+                        } else {
+                            $("#file-message").css("display", "none");
+                        }
+
+                        //Gán hàm xử lý sự kiện cho nút Xem Hóa Đơn
                         $(document).on("click", ".btnShowModalHDDTClick", function () {
                             $(this).off('click');
-                            var fileName = $(this).data("file-name");
-                            if (fileName.split('.').pop() == "xml") {
-                                console.log(fileName);
-                                //Gọi API  để đọc file XML và lấy ra thông tin hóa đơn theo ngày nhận thư và tên file 
-                                $http.get("/Home/ReadXML?stringdate=" + stringdate + "&fileName=" + fileName)
-                                    .then(function (respone) {
-                                        if (respone.data.error) {
-                                            alert(respone.data.error);
-                                            $("#textResult").html(respone.data.error).removeClass("text-success").addClass("text-danger");
-                                        } else {
-                                            var vInvoice = respone.data.data; console.log(vInvoice)
-                                            //hiện thị thông tin Chữ ký số
-                                            $scope.Issueser1 = vInvoice.Certificate2.Issueser; 
-                                            $scope.Subject = vInvoice.Certificate2.Subject;
-
-                                            //hiện thị thông tin người bán
-                                            $scope.SellerTen = vInvoice.seller.Ten;
-                                            $scope.SellerMST = vInvoice.seller.MST;
-                                            $scope.SellerDChi = vInvoice.seller.DChi;
-
-                                            //hiển thị thông tin người mua
-                                            $scope.BuyerTen = vInvoice.buyer.Ten;
-                                            $scope.BuyerMST = vInvoice.buyer.MST;
-                                            $scope.BuyerDChi = vInvoice.buyer.DChi;
-                                            $scope.in4_Nky = vInvoice.buyer.NKy;
-
-                                            //hiện thị thông tin đã kiểm tra
-                                            $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
-                                            $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
-                                            $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
-                                            $scope.in4_NHDon = vInvoice.generalInformation.NLap;
-                                             
-                                            //hiện thị thông tin thanh toán
-                                            $scope.TCThue = formatter.format(vInvoice.pay.TgTCThue);
-                                            $scope.TThue = formatter.format(vInvoice.pay.TgTThue);
-                                            $scope.ThTien = formatter.format(vInvoice.pay.ThTien);
-                                        }
-                                    })
-                                $("#invoiceModal").modal("show");
-                            }
+                            var fileName = $(this).data("file-name"); //lấy ra tên file từ dataset
+                            //gọi hàm xử lý sự kiện nút Xem hóa đơn
+                            btnShowModalHDDTClick(stringdate, fileName);
                         });
                     });
             }
+
+            //Định dạng string money theo VND
             const formatter = new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
                 currency: 'VND',
             });
 
-            
-            $scope.logout = function () {
-                window.location.href = "/Home/Logout";
+            //Hàm sử lý sự kiện Click cho nút "Xem hóa đơn" để hiện thị nội dung file XML ra MODAL
+            function btnShowModalHDDTClick(paramStringDate, paramFileName) {
+                if (paramFileName.split('.').pop() == "xml") {
+                    console.log(paramFileName);
+                    //Gọi API  để đọc file XML và lấy ra thông tin hóa đơn theo ngày nhận thư và tên file 
+                    $http.get("/Home/ReadXML?stringdate=" + paramStringDate + "&fileName=" + paramFileName)
+                        .then(function (respone) {
+                            if (respone.data.error) {
+                                alert(respone.data.error);
+                                $("#textResult").html(respone.data.error).removeClass("text-success").addClass("text-danger");
+                            } else {
+                                var vInvoice = respone.data.data; console.log(vInvoice)
+                                //hiển thị thông tin Chữ ký số
+                                $scope.Issueser1 = vInvoice.Certificate2.Issueser;
+                                $scope.Subject = vInvoice.Certificate2.Subject;
+
+                                //hiển thị thông tin người bán
+                                $scope.SellerTen = vInvoice.seller.Ten;
+                                $scope.SellerMST = vInvoice.seller.MST;
+                                $scope.SellerDChi = vInvoice.seller.DChi;
+
+                                //hiển thị thông tin người mua
+                                $scope.BuyerTen = vInvoice.buyer.Ten;
+                                $scope.BuyerMST = vInvoice.buyer.MST;
+                                $scope.BuyerDChi = vInvoice.buyer.DChi;
+                                $scope.in4_Nky = vInvoice.buyer.NKy;
+
+                                //hiển thị thông tin đã kiểm tra
+                                $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
+                                $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
+                                $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
+                                $scope.in4_NHDon = vInvoice.generalInformation.NLap;
+
+                                //hiển thị mã cơ quan thuế
+                                $scope.MCQT = vInvoice.MCCQT;
+
+                                //hiển thị thông tin thanh toán
+                                $scope.TCThue = formatter.format(vInvoice.pay.TgTCThue);
+                                $scope.TThue = formatter.format(vInvoice.pay.TgTThue);
+                                $scope.ThTien = formatter.format(vInvoice.pay.ThTien);
+                            }
+                        })
+                    $("#invoiceModal").modal("show");
+                }
             }
+
+            //$scope.logout = function () {
+            //    window.location.href = "/Home/Logout";
+            //}
         })
     </script>
 }
@@ -643,7 +636,7 @@
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
         }
-        /* -------------------------------------------- Scroll bar -----------------------------------------*/
+        /* ---------------------- Scroll bar --------------------------*/
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -653,17 +646,15 @@
             box-shadow: ivory 0 0 3px grey;
             border-radius: 20px;
         }
-
         /* Handle */
         ::-webkit-scrollbar-thumb {
             background: rgb(211, 210, 210);
             border-radius: 20px;
         }
-
-            /* Handle on hover */
-            ::-webkit-scrollbar-thumb:hover {
-                background: rgb(211, 210, 210);
-            }
-        /* -------------------------------------- -------------------------------------------------------- */
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgb(211, 210, 210);
+        }
+        /* ------------------------ -------------------------------- */
     </style>
 }

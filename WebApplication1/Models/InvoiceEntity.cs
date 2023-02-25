@@ -15,5 +15,6 @@ namespace WebApp_ReadXML.Models
         public Pay pay { get; set; }
         public List<FeeType> feeType { get; set; }
         public x509Certificate2 Certificate2 { get; set; }
+        public string MCCQT { get; set; }
     }
 }

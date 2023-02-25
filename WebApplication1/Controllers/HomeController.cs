@@ -18,6 +18,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Xml;
@@ -31,24 +32,25 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
+        private string _emailUsername; //khai báo tên email
+        private string _emailPassword; //Khai báo mật khẩu email
+
         //Hàm hiện thị ở trang Index
-        //[HttpPost]
-        public async Task<ActionResult> Index(string username, string password)
+        public async Task<ActionResult> Index()
         {
             var listEmail = new List<EmailEntity>();
             var mailClient = new ImapClient();
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                return View("Login");
-            }
-            else
-            {
-                mailClient.Connect("imap.gmail.com", 993);
-                mailClient.Authenticate(username, password);
-            }
+
+            //đọc user từ file web.config;
+            _emailUsername = WebConfigurationManager.AppSettings["email_username"];
+            _emailPassword = WebConfigurationManager.AppSettings["email_password"];
+
+            mailClient.Connect("imap.gmail.com", 993);
+            mailClient.Authenticate(_emailUsername, _emailPassword);
+            //Truy xuất vào Inbox của email và đọc thư nhận
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
-
+            //lấy ra danh dách uId của tất cả các mail nhận
             IList<UniqueId> uids = folder.Search(SearchQuery.All);
             foreach (UniqueId uid in uids)
             {
@@ -64,21 +66,64 @@ namespace WebApplication1.Controllers
                 var Typefilename = new List<string>();
                 var dateReceive = EmailEntity.TimeReceive;
                 var stringdate = dateReceive.ToString("yyyyMMdd");
-                string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/";
+                string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;
 
                 foreach (MimeEntity attachment in message.Attachments)
                 {
-                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;
-                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName);
+                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;//lấy ra tên của từng file
+                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); //lấy kiểu file của từng file
                     if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
                     {
                         fileAttactment.Add(fileName);
                         Typefilename.Add(mimeType);
-                        if (!Directory.Exists(localFilePath + stringdate))
+                        if (!Directory.Exists(localFilePath))
                         {
-                            Directory.CreateDirectory(localFilePath + stringdate);
+                            Directory.CreateDirectory(localFilePath);
                         }
-                        using (var stream = System.IO.File.Create(localFilePath + stringdate + "/" + fileName))
+                        using (var stream = System.IO.File.Create(localFilePath  + "/" + fileName))
+                        {
+                            if (attachment is MessagePart)
+                            {
+                                var rfc822 = (MessagePart)attachment;
+                                rfc822.Message.WriteTo(stream);
+                            }
+                            else
+                            {
+                                var part = (MimePart)attachment;
+                                part.Content.DecodeTo(stream);
+                            }
+                        }
+                    }
+                    //Tách file PDF vào folder riêng
+                    if (mimeType == "application/pdf")
+                    {
+                        if (!Directory.Exists(localFilePath + "/PDF/"))
+                        {
+                            Directory.CreateDirectory(localFilePath + "/PDF/");
+                        }
+                        using (var stream = System.IO.File.Create(localFilePath + "/PDF/" + fileName))
+                        {
+                            if (attachment is MessagePart)
+                            {
+                                var rfc822 = (MessagePart)attachment;
+
+                                rfc822.Message.WriteTo(stream);
+                            }
+                            else
+                            {
+                                var part = (MimePart)attachment;
+                                part.Content.DecodeTo(stream);
+                            }
+                        }
+                    }
+                    //Tách file xml vào foler riêng
+                    if (mimeType == "text/xml")
+                    {
+                        if (!Directory.Exists(localFilePath + "/XML/"))
+                        {
+                            Directory.CreateDirectory(localFilePath + "/XML/");
+                        }
+                        using (var stream = System.IO.File.Create(localFilePath + "/XML/" + fileName))
                         {
                             if (attachment is MessagePart)
                             {
@@ -105,7 +150,9 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        //Hàm tải file 
+        //Hàm tải file với
+        //Input là tên file
+        //Output là 1 File có tên truyền vào
         [HttpGet]
         public ActionResult GetFile(string fileName)
         {
@@ -121,40 +168,47 @@ namespace WebApplication1.Controllers
         }
 
         //Hàm kiểm tra tài khoản người dùng
-        [HttpGet]
-        public JsonResult validateUser(string username, string password)
-        {
-            var listUser = new List<UserEntity>();
-            var userFind = new UserEntity();
-            UserEntity User1 = new UserEntity("maixson.2712@gmail.com", "qpnchazurvybnkxs"); listUser.Add(User1);
-            UserEntity User2 = new UserEntity("legolas15397@gmail.com", "yixhptngrwpgnwzb"); listUser.Add(User2);
-            UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
-            UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
+        //[HttpGet]
+        //public JsonResult validateUser(string username, string password)
+        //{
+        //    var listUser = new List<UserEntity>();
+        //    var userFind = new UserEntity();
+        //    UserEntity User1 = new UserEntity("maixson.2712@gmail.com", "qpnchazurvybnkxs"); listUser.Add(User1);
+        //    UserEntity User2 = new UserEntity("legolas15397@gmail.com", "yixhptngrwpgnwzb"); listUser.Add(User2);
+        //    UserEntity User3 = new UserEntity("kiemtra11062712@gmail.com", "ilgtrxlhaeqzkbbx"); listUser.Add(User3);
+        //    UserEntity User4 = new UserEntity("pha170320@gmail.com", "ryarooxkojsnqybd"); listUser.Add(User4);
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);
-            }
+        //    if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        //    {
+        //        return Json(new { error = "Please enter username and password." }, JsonRequestBehavior.AllowGet);
+        //    }
 
-            foreach (UserEntity item in listUser)
-            {
-                if (item.user == username && item.password == password)
-                {
-                    userFind = item;
-                    return Json(new { data = userFind }, JsonRequestBehavior.AllowGet);
-                }
-            }
-            return Json(new { error = "Incorrect username or password" }, JsonRequestBehavior.AllowGet);
-        }
+        //    foreach (UserEntity item in listUser)
+        //    {
+        //        if (item.user == username && item.password == password)
+        //        {
+        //            userFind = item;
+        //            return Json(new { data = userFind }, JsonRequestBehavior.AllowGet);
+        //        }
+        //    }
+        //    return Json(new { error = "Incorrect username or password" }, JsonRequestBehavior.AllowGet);
+        //}
 
         //Hàm lấy nội dung chi tiết mail theo Id
+        //Input là id của email
+        //Output là đối tượng Email có id truyền vào
         [HttpGet]
-        public async Task<ActionResult> getEachEmail(string Id_mail, string username, string password)
+        public async Task<ActionResult> getEachEmail(string Id_mail/*, string username, string password*/)
         {
             var getDetailEmail = new EmailEntity();
             var mailClient = new ImapClient();
+
+            //đọc user từ file web.config;
+            _emailUsername = WebConfigurationManager.AppSettings["email_username"];
+            _emailPassword = WebConfigurationManager.AppSettings["email_password"];
+
             mailClient.Connect("imap.gmail.com", 993);
-            mailClient.Authenticate(username, password);
+            mailClient.Authenticate(_emailUsername, _emailPassword);
             var folder = await mailClient.GetFolderAsync("Inbox");
             await folder.OpenAsync(FolderAccess.ReadWrite);
 
@@ -238,6 +292,8 @@ namespace WebApplication1.Controllers
             for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
         }
+
+        //lấy đường dẫn tới file theo 10 ngày ( từ ngày hiện tại về 10 ngày trước)
         private List<string> getLocalpath()
         {
             List<string> localFilePath = new List<string>();
@@ -250,7 +306,9 @@ namespace WebApplication1.Controllers
             return localFilePath;
         }
 
-        //-------------------------------Đọc file XML---------------------------------------------------
+        //----------Đọc file XML---------------------
+        //Input là ngày nhận thư (stringdate) và tên file(fileName)
+        //Output là đối tượng Hóa đơn(Invoice) ở dạng Json
         public JsonResult ReadXML(string stringdate, string fileName)
         {
             string filePath = Server.MapPath("~/Attachment/" + stringdate + "/" + fileName); // đường dẫn tệp XML
@@ -262,6 +320,7 @@ namespace WebApplication1.Controllers
             XmlNodeList nodeList = xmlDocument.GetElementsByTagName("Signature"); //Truy vấn đến Tag Signature
             signedXml.LoadXml((XmlElement)nodeList.Item(0));
             
+            //đọc thông tin Chứng nhận
             var certificate = xmlDocument.GetElementsByTagName("X509Certificate").Item(0).InnerText; 
             byte[] tmp;
             tmp = Convert.FromBase64String(certificate);
@@ -270,10 +329,12 @@ namespace WebApplication1.Controllers
             bool verifiedXml = signedXml.CheckSignature(cer.PublicKey.Key); //kiểm tra chữ ký số
             //truy vấn node mã của cơ quan thuế
             var nodeMCQT = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/MCCQT"); //Truy vấn đến thẻ Mã Cơ quan thuế
-            //truy vấn ngày lập hóa đơn và ngày ký
+            //truy vấn node ngày lập hóa đơn
             var nodeNgayLap = xmlDocument.SelectSingleNode("/TDiep/DLieu/HDon/DLHDon/TTChung/NLap");
+            //truy vấn node Mgafy Ký của người bán
             var nodeNgayKy = xmlDocument.GetElementsByTagName("SigningTime").Item(0);
             DateTime NKy = DateTime.Parse(nodeNgayKy.InnerText).Date; //Định dạng ngày đăng ký
+
             if (!verifiedXml)
             {
                 return Json(new { status = false, message = "Dữ liệu hóa đơn đã bị thay đổi" });
@@ -342,14 +403,14 @@ namespace WebApplication1.Controllers
                 buyer.NKy = NKy.ToString("yyyy-MM-dd");
                 invoice.buyer = buyer;
 
-                //đọc thông tin hàng hóa dịch vụ
+                //Truy vấn vào node child trong danh sách hàng hóa dịch vụ
                 XmlNodeList listServiceProductNode = xmlDocument.SelectNodes("/TDiep/DLieu/HDon/DLHDon/NDHDon/DSHHDVu/HHDVu");
                 var listServiceProduct = new List<ServiceProduct>();
 
                 foreach (XmlNode node in listServiceProductNode)
                 {
                     var serviceProduct = new ServiceProduct();
-
+                    //đọc thông tin từng node hàng hóa dịch vụ
                     serviceProduct.TChat = ReadNodeList(node, "TChat");
                     serviceProduct.STT = ReadNodeList(node, "STT");
                     serviceProduct.MHHDVu = ReadNodeList(node, "MHHDVu");
@@ -361,7 +422,7 @@ namespace WebApplication1.Controllers
                     serviceProduct.ThTien = ReadNodeList(node, "ThTien");
                     serviceProduct.TSuat = ReadNodeList(node, "TSuat");
 
-                    listServiceProduct.Add(serviceProduct);
+                    listServiceProduct.Add(serviceProduct);//add từng node child vào danh sách
                 }
                 invoice.serviceProducts = listServiceProduct;
 
@@ -377,12 +438,13 @@ namespace WebApplication1.Controllers
                 pay.TgTTTBChu = ReadLineXML(xmlDocument, "/NDHDon/TToan/TgTTTBChu");
                 invoice.pay = pay;
 
-                //đọc thông tin Phí
+                //Truy vấn vào node chile trong danh sách loại Phí
                 XmlNodeList listFeeTypeNode = xmlDocument.SelectNodes("/TDiep/DLieu/HDon/DLHDon/NDHDon/TToan/DSLPhi/LPhi");
                 var listFeeType = new List<FeeType>();
                 foreach(XmlNode node in listFeeTypeNode)
                 {
                     var feeType = new FeeType();
+                    //đọc thông tin từng node Loại Phí
                     feeType.TLPhi = ReadNodeList(node, "TLPhi");
                     feeType.TPhi = ReadNodeList(node, "TPhi");
                     listFeeType.Add(feeType);
@@ -394,15 +456,21 @@ namespace WebApplication1.Controllers
                 Certificate2.Issueser = cer.Issuer;
                 Certificate2.Subject = cer.Subject;
                 invoice.Certificate2 = Certificate2;
+
+                //đọc thông tin mã của cơ quan thuế
+                invoice.MCCQT = nodeMCQT.InnerText;
+
             }
             return Json(new { data = invoice }, JsonRequestBehavior.AllowGet);
         }
 
-        //kiểm tra node đơn 
+        //kiểm tra node đơn với
+        //Input là object XmlDocument và tên node đơn
+        //Output là chuỗi giá trị của node trong xml nếu node tồn tại, ngược lại thì trả về rỗng
         private string ReadLineXML(XmlDocument xmlDocument, string elementXml)
         {
             string pathNodeXML = "/TDiep/DLieu/HDon/DLHDon";
-            var result = xmlDocument.SelectSingleNode(pathNodeXML + elementXml);
+            var result = xmlDocument.SelectSingleNode(pathNodeXML + elementXml);//truy vấn vào node đơn
             if (result == null)
             {
                 return "";
@@ -414,6 +482,8 @@ namespace WebApplication1.Controllers
         }
 
         //kiểm tra các node trong List
+        //Input là object XmlNode và tên node con
+        //Output là chuỗi giá trị của node con trong xml nếu node tồn tại, ngược lại thì trả về rỗng
         private string ReadNodeList(XmlNode node, string elementXml)
         {
             var result = node[elementXml];

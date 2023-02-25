@@ -223,7 +223,7 @@ namespace WebApplication1.Controllers
             var Typefilename = new List<string>();
             var dateReceive = getDetailEmail.TimeReceive;
             var stringdate = dateReceive.ToString("yyyyMMdd");
-            string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/";
+            string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;
 
             foreach (MimeEntity attachment in message.Attachments)
             {
@@ -236,15 +236,15 @@ namespace WebApplication1.Controllers
                 }
                 if (mimeType == "application/x-zip-compressed")
                 {
-                    using (ZipArchive archive = ZipFile.Open(localFilePath + stringdate + "/" + fileName, ZipArchiveMode.Update))
+                    using (ZipArchive archive = ZipFile.Open(localFilePath + "/" + fileName, ZipArchiveMode.Update))
                     {
                         foreach (var file in archive.Entries)
                         {
                             var fileNameinZIP = file.FullName;
                             var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
-                            if (System.IO.File.Exists(localFilePath + stringdate + "/" + fileNameinZIP))
+                            if (System.IO.File.Exists(localFilePath + "/" + fileNameinZIP))
                             {
-                                System.IO.File.Delete(localFilePath + stringdate + "/" + fileNameinZIP);
+                                System.IO.File.Delete(localFilePath + "/" + fileNameinZIP);
                             }
                             if (duoi == "xml" || duoi == "pdf")
                             {
@@ -252,12 +252,12 @@ namespace WebApplication1.Controllers
                                 //var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
                             }
                         }
-                        archive.ExtractToDirectory(localFilePath + stringdate);
+                        archive.ExtractToDirectory(localFilePath);
                     }
                 }
                 if (mimeType == "application/octet-stream")
                 {
-                    using (var archive = ArchiveFactory.Open(localFilePath + stringdate + "/" + fileName))
+                    using (var archive = ArchiveFactory.Open(localFilePath + "/" + fileName))
                     {
                         foreach (var entry in archive.Entries)
                         {
@@ -265,7 +265,7 @@ namespace WebApplication1.Controllers
                             var duoi = fileNameinRAR.Substring(fileNameinRAR.LastIndexOf(".") + 1);
                             if (!entry.IsDirectory)
                             {
-                                entry.WriteToDirectory(localFilePath + stringdate, new ExtractionOptions()
+                                entry.WriteToDirectory(localFilePath, new ExtractionOptions()
                                 {
                                     ExtractFullPath = true,
                                     Overwrite = true

@@ -548,44 +548,75 @@
                     $http.get("/Home/ReadXML?stringdate=" + paramStringDate + "&fileName=" + paramFileName)
                         .then(function (respone) {
                             if (respone.data.error) {
-                                alert(respone.data.error);
                                 $("#textResult").html(respone.data.error).removeClass("text-success").addClass("text-danger");
-                            } else {
-                                var vInvoice = respone.data.data; console.log(vInvoice)
-                                //hiển thị thông tin Chữ ký số
-                                $scope.Issueser1 = vInvoice.Certificate2.Issueser;
-                                $scope.Subject = vInvoice.Certificate2.Subject;
+
+                                $scope.Issueser1 = "";
+                                $scope.Subject = "";
 
                                 //hiển thị thông tin người bán
-                                $scope.SellerTen = vInvoice.seller.Ten;
-                                $scope.SellerMST = vInvoice.seller.MST;
-                                $scope.SellerDChi = vInvoice.seller.DChi;
+                                $scope.SellerTen = "";
+                                $scope.SellerMST = "";
+                                $scope.SellerDChi = "";
 
                                 //hiển thị thông tin người mua
-                                $scope.BuyerTen = vInvoice.buyer.Ten;
-                                $scope.BuyerMST = vInvoice.buyer.MST;
-                                $scope.BuyerDChi = vInvoice.buyer.DChi;
-                                $scope.in4_Nky = vInvoice.buyer.NKy;
+                                $scope.BuyerTen = "";
+                                $scope.BuyerMST = "";
+                                $scope.BuyerDChi = "";
+                                $scope.in4_Nky = "";
 
                                 //hiển thị thông tin đã kiểm tra
-                                $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
-                                $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
-                                $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
-                                $scope.in4_NHDon = vInvoice.generalInformation.NLap;
+                                $scope.in4_MSHDon = "";
+                                $scope.in4_KHHDon = "";
+                                $scope.in4_SHDon = "";
+                                $scope.in4_NHDon = "";
 
                                 //hiển thị mã cơ quan thuế
-                                $scope.MCQT = vInvoice.MCCQT;
+                                $scope.MCQT = "";
 
                                 //hiển thị thông tin thanh toán
-                                $scope.TCThue = formatter.format(vInvoice.pay.TgTCThue);
-                                $scope.TThue = formatter.format(vInvoice.pay.TgTThue);
-                                $scope.ThTien = formatter.format(vInvoice.pay.ThTien);
+                                $scope.TCThue = "";
+                                $scope.TThue = "";
+                                $scope.ThTien = "";
+                            } else {
+                                $("#textResult").html("Chứng thư hợp lệ").removeClass("text-danger").addClass("text-success");
+                                bindDatatoModal(respone.data.data); console.log(respone.data.data)
+                                //hiển thị thông tin Chữ ký số
+                                
+                                
                             }
                         })
                     $("#invoiceModal").modal("show");
                 }
             }
+            function bindDatatoModal (vInvoice) {
+                $scope.Issueser1 = vInvoice.Certificate2.Issueser;
+                $scope.Subject = vInvoice.Certificate2.Subject;
 
+                //hiển thị thông tin người bán
+                $scope.SellerTen = vInvoice.seller.Ten;
+                $scope.SellerMST = vInvoice.seller.MST;
+                $scope.SellerDChi = vInvoice.seller.DChi;
+
+                //hiển thị thông tin người mua
+                $scope.BuyerTen = vInvoice.buyer.Ten;
+                $scope.BuyerMST = vInvoice.buyer.MST;
+                $scope.BuyerDChi = vInvoice.buyer.DChi;
+                $scope.in4_Nky = vInvoice.buyer.NKy;
+
+                //hiển thị thông tin đã kiểm tra
+                $scope.in4_MSHDon = vInvoice.generalInformation.KHMSHDon;
+                $scope.in4_KHHDon = vInvoice.generalInformation.KHHDon;
+                $scope.in4_SHDon = vInvoice.generalInformation.SHDon;
+                $scope.in4_NHDon = vInvoice.generalInformation.NLap;
+
+                //hiển thị mã cơ quan thuế
+                $scope.MCQT = vInvoice.MCCQT;
+
+                //hiển thị thông tin thanh toán
+                $scope.TCThue = formatter.format(vInvoice.pay.TgTCThue);
+                $scope.TThue = formatter.format(vInvoice.pay.TgTThue);
+                $scope.ThTien = formatter.format(vInvoice.pay.ThTien);
+            }
             //$scope.logout = function () {
             //    window.location.href = "/Home/Logout";
             //}

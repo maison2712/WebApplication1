@@ -466,7 +466,7 @@
                 //Gọi API để lấy ra data của từng mail theo id
                 $http.get("/Home/getEachEmail?Id_mail=" + id/* + "&username=" + gUserName + "&password=" + gPassWord*/)
                     .then(function (response) {
-                        $scope.emailDetail = response.data.data; console.log($scope.emailDetail) 
+                        $scope.emailDetail = response.data.data; console.log($scope.emailDetail)
                         $scope.subject = $scope.emailDetail.Subject;
                         $scope.from = $scope.emailDetail.From;
                         var time = $scope.emailDetail.TimeReceive;
@@ -481,11 +481,11 @@
                         }
                         //-Định dạng lại thời gian nhận mail-//
                         var stringdate = new Date(numTime).toISOString().slice(0, 10).replace(/-/g, ""); //Định dạng ngày tháng nhận thư theo dạng (yyyyMMdd)
-                        //Tách tên của người dùng mail và địa chỉ mail 
+                        //Tách tên của người dùng mail và địa chỉ mail
                         const match = $scope.from.match(/"(.+)"\s*<(.+)>/);
                         $scope.nameEmail = match[1];
                         $scope.address = match[2];
-                        
+
                         $scope.time = new Date(numTime).toLocaleString(); // định dạng ngày tháng nhận thư để hiển thị vào form chi tiết mail
                         let listFileName = $scope.FileAttactment.split(";");
                         var vCheckFile = false;
@@ -493,9 +493,9 @@
                             if (listFileName[i].split('.').pop() == "xml") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                        '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
-                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API truyền từng tên file vào hàm GetFile để tải file
-                                        '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>'+ //Nút xem file XML
+                                    '<i class="fa-regular fa-file text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' +  //Gọi API truyền từng tên file vào hàm GetFile để tải file
+                                    '<button class="btn text-danger btnShowModalHDDTClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>' + //Nút xem file XML
                                     '</div>'
                                 )
                                 vCheckFile = true;
@@ -503,16 +503,25 @@
                             else if (listFileName[i].split('.').pop() == "zip" || listFileName[i].split('.').pop() == "rar") {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                        '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
-                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                    '<i class="fa-regular fa-file-zipper text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                    '</div>'
+                                )
+                            }
+                            else if (listFileName[i].split('.').pop() == "pdf") {
+                                $("#fileAttactment").append(
+                                    '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
+                                    '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
                                     '</div>'
                                 )
                             }
                             else {
                                 $("#fileAttactment").append(
                                     '<div class="col-md-3 my-5 text-center" style="display: flex; flex-direction: column;">' +
-                                        '<i class="far fa-file-pdf text-primary fa-2xl mb-4"></i>' +
-                                        '<a href="/Home/GetFile?fileName=' + listFileName[i] + '">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                    '<i class="fas fa-file-invoice text-primary fa-2xl mb-4"></i>' +
+                                    '<a href="#">' + listFileName[i] + '</a>' + //Gọi API chuyền từng tên file vào hàm GetFile để tải file
+                                    '<button class="btn text-danger btnShowModalEMLClick" data-file-name="' + listFileName[i] + '"><i class="fa-regular fa-eye"></i>&nbsp; Xem hóa đơn</button>' +
                                     '</div>'
                                 )
                             }
@@ -531,6 +540,15 @@
                             //gọi hàm xử lý sự kiện nút Xem hóa đơn
                             btnShowModalHDDTClick(stringdate, fileName);
                         });
+                        //Gán hàm xử lý sự kiện cho nút Xem File XML
+                        $(document).on("click", ".btnShowModalEMLClick", function () {
+                            $(this).off('click');
+                            var fileName = $(this).data("file-name"); //lấy ra tên file từ dataset
+                            //gọi hàm xử lý sự kiện nút Xem hóa đơn
+                            //btnShowModalHDDTClick(stringdate, fileName);
+                            console.log(fileName)
+                            var fileName_cutEML = fileName.split('.').pop() == "eml"
+                        });
                     });
             }
 
@@ -544,7 +562,7 @@
             function btnShowModalHDDTClick(paramStringDate, paramFileName) {
                 if (paramFileName.split('.').pop() == "xml") {
                     console.log(paramFileName);
-                    //Gọi API  để đọc file XML và lấy ra thông tin hóa đơn theo ngày nhận thư và tên file 
+                    //Gọi API  để đọc file XML và lấy ra thông tin hóa đơn theo ngày nhận thư và tên file
                     $http.get("/Home/ReadXML?stringdate=" + paramStringDate + "&fileName=" + paramFileName)
                         .then(function (respone) {
                             if (respone.data.error) {
@@ -581,8 +599,8 @@
                                 $("#textResult").html("Chứng thư hợp lệ").removeClass("text-danger").addClass("text-success");
                                 bindDatatoModal(respone.data.data); console.log(respone.data.data)
                                 //hiển thị thông tin Chữ ký số
-                                
-                                
+
+
                             }
                         })
                     $("#invoiceModal").modal("show");

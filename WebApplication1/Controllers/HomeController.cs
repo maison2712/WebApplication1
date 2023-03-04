@@ -26,6 +26,14 @@ using System.Xml.Linq;
 using WebApp_ReadXML.Models;
 using WebApplication1.Models;
 using static System.Net.Mime.MediaTypeNames;
+using HtmlAgilityPack;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Windows.Forms;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Security.Policy;
 
 
 namespace WebApplication1.Controllers
@@ -64,77 +72,118 @@ namespace WebApplication1.Controllers
                 EmailEntity.Body = message.TextBody;
                 var fileAttactment = new List<string>();
                 var Typefilename = new List<string>();
+                var mailMessageEML = new mailMessageEML();
                 var dateReceive = EmailEntity.TimeReceive;
                 var stringdate = dateReceive.ToString("yyyyMMdd");
                 string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;
+                string pattern = @"https://tracuuhoadon\.fpt\.com\.vn/<([^>]+)>";
+                Regex regex = new Regex(pattern);
 
+                MatchCollection matches = regex.Matches(EmailEntity.Body);
+
+                foreach (Match match in matches)
+                {
+                    string link = match.Groups[1].Value;
+                    Uri uri = new Uri(link);
+                    string mst = HttpUtility.ParseQueryString(uri.Query).Get("mst");
+                    string sec = HttpUtility.ParseQueryString(uri.Query).Get("sec");
+                    string fileNameXML = mst + sec + ".xml";
+                    fileAttactment.Add(fileNameXML);
+                    ChromeOptions options = new ChromeOptions();
+                    options.AddArgument("--headless"); // chạy Chrome ở chế độ ẩn
+                    options.AddArgument("--disable-gpu"); // tắt GPU để tăng tốc độ xử lý
+                    options.AddArgument("--no-sandbox"); // tắt sandbox để tăng tốc độ xử lý
+                    options.AddArgument("--disable-dev-shm-usage"); // tắt sử dụng bộ nhớ chia sẻ để tăng tốc độ xử lý
+                    options.AddArgument("--disable-extensions"); // tắt các extension không cần thiết để tăng tốc độ xử lý
+                    IWebDriver driver = new ChromeDriver(options);
+                    driver.Navigate().GoToUrl(link);
+                    System.Threading.Thread.Sleep(3000);
+                    // Thực thi đoạn mã JavaScript để tải file XML về
+                    IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                    string stringXML = (string)js.ExecuteScript("return xml");
+                    if (stringXML != null)
+                    {
+                        XmlDocument xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(stringXML);
+                        xmlDocument.Save(localFilePath + "/" + fileNameXML);
+                    }
+                }
                 foreach (MimeEntity attachment in message.Attachments)
                 {
-                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;//lấy ra tên của từng file
-                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); //lấy kiểu file của từng file
-                    if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
+                    if (attachment.ContentType.ToString() == "Content-Type: message/rfc822")
                     {
-                        fileAttactment.Add(fileName);
-                        Typefilename.Add(mimeType);
-                        if (!Directory.Exists(localFilePath))
-                        {
-                            Directory.CreateDirectory(localFilePath);
-                        }
-                        using (var stream = System.IO.File.Create(localFilePath  + "/" + fileName))
-                        {
-                            if (attachment is MessagePart)
-                            {
-                                var rfc822 = (MessagePart)attachment;
-                                rfc822.Message.WriteTo(stream);
-                            }
-                            else
-                            {
-                                var part = (MimePart)attachment;
-                                part.Content.DecodeTo(stream);
-                            }
-                        }
+                        var rfc822 = (MessagePart)attachment;
+                        var emlMessage = rfc822.Message;
+                        fileAttactment.Add(mailMessageEML.Subject);
                     }
-                    //Tách file PDF vào folder riêng
-                    if (mimeType == "application/pdf")
+                    else
                     {
-                        if (!Directory.Exists(localFilePath + "/PDF/"))
+                        var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;//lấy ra tên của từng file
+                        string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName); //lấy kiểu file của từng file
+                        if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
                         {
-                            Directory.CreateDirectory(localFilePath + "/PDF/");
-                        }
-                        using (var stream = System.IO.File.Create(localFilePath + "/PDF/" + fileName))
-                        {
-                            if (attachment is MessagePart)
+                            fileAttactment.Add(fileName);
+                            Typefilename.Add(mimeType);
+                            if (!Directory.Exists(localFilePath))
                             {
-                                var rfc822 = (MessagePart)attachment;
+                                Directory.CreateDirectory(localFilePath);
+                            }
+                            using (var stream = System.IO.File.Create(localFilePath + "/" + fileName))
+                            {
+                                if (attachment is MessagePart)
+                                {
+                                    var rfc822 = (MessagePart)attachment;
+                                    rfc822.Message.WriteTo(stream);
+                                }
+                                else
+                                {
+                                    var part = (MimePart)attachment;
+                                    part.Content.DecodeTo(stream);
+                                }
+                            }
+                        }
+                        //Tách file PDF vào folder riêng
+                        if (mimeType == "application/pdf")
+                        {
+                            if (!Directory.Exists(localFilePath + "/PDF/"))
+                            {
+                                Directory.CreateDirectory(localFilePath + "/PDF/");
+                            }
+                            using (var stream = System.IO.File.Create(localFilePath + "/PDF/" + fileName))
+                            {
+                                if (attachment is MessagePart)
+                                {
+                                    var rfc822 = (MessagePart)attachment;
 
-                                rfc822.Message.WriteTo(stream);
-                            }
-                            else
-                            {
-                                var part = (MimePart)attachment;
-                                part.Content.DecodeTo(stream);
+                                    rfc822.Message.WriteTo(stream);
+                                }
+                                else
+                                {
+                                    var part = (MimePart)attachment;
+                                    part.Content.DecodeTo(stream);
+                                }
                             }
                         }
-                    }
-                    //Tách file xml vào foler riêng
-                    if (mimeType == "text/xml")
-                    {
-                        if (!Directory.Exists(localFilePath + "/XML/"))
+                        //Tách file xml vào foler riêng
+                        if (mimeType == "text/xml")
                         {
-                            Directory.CreateDirectory(localFilePath + "/XML/");
-                        }
-                        using (var stream = System.IO.File.Create(localFilePath + "/XML/" + fileName))
-                        {
-                            if (attachment is MessagePart)
+                            if (!Directory.Exists(localFilePath + "/XML/"))
                             {
-                                var rfc822 = (MessagePart)attachment;
+                                Directory.CreateDirectory(localFilePath + "/XML/");
+                            }
+                            using (var stream = System.IO.File.Create(localFilePath + "/XML/" + fileName))
+                            {
+                                if (attachment is MessagePart)
+                                {
+                                    var rfc822 = (MessagePart)attachment;
 
-                                rfc822.Message.WriteTo(stream);
-                            }
-                            else
-                            {
-                                var part = (MimePart)attachment;
-                                part.Content.DecodeTo(stream);
+                                    rfc822.Message.WriteTo(stream);
+                                }
+                                else
+                                {
+                                    var part = (MimePart)attachment;
+                                    part.Content.DecodeTo(stream);
+                                }
                             }
                         }
                     }
@@ -221,60 +270,121 @@ namespace WebApplication1.Controllers
             getDetailEmail.Body = message.TextBody;
             var fileAttactment = new List<string>();
             var Typefilename = new List<string>();
+            var messageEML = new List<mailMessageEML>();
+            var mailMessageEML = new mailMessageEML();
             var dateReceive = getDetailEmail.TimeReceive;
             var stringdate = dateReceive.ToString("yyyyMMdd");
             string localFilePath = AppDomain.CurrentDomain.BaseDirectory + "/Attachment/" + stringdate;
 
-            foreach (MimeEntity attachment in message.Attachments)
+            string patternFPT = @"https://tracuuhoadon\.fpt\.com\.vn/<([^>]+)>";
+            Regex regexFPT = new Regex(patternFPT);
+
+            MatchCollection matchesFPT = regexFPT.Matches(getDetailEmail.Body);
+
+            foreach (Match match in matchesFPT)
             {
-                var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;
-                string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName);
-                if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
+                string link = match.Groups[1].Value;
+                Uri uri = new Uri(link);
+                string mst = HttpUtility.ParseQueryString(uri.Query).Get("mst");
+                string sec = HttpUtility.ParseQueryString(uri.Query).Get("sec");
+                string fileNameXML = mst + sec + ".xml";
+                fileAttactment.Add(fileNameXML);
+            }
+
+                foreach (MimeEntity attachment in message.Attachments)
+            {
+                if (attachment.ContentType.ToString() == "Content-Type: message/rfc822")
                 {
-                    fileAttactment.Add(fileName);
-                    Typefilename.Add(mimeType);
-                }
-                if (mimeType == "application/x-zip-compressed")
-                {
-                    using (ZipArchive archive = ZipFile.Open(localFilePath + "/" + fileName, ZipArchiveMode.Update))
+                    var rfc822 = (MessagePart)attachment;
+                    var emlMessage = rfc822.Message;
+
+                    mailMessageEML.Id = emlMessage.MessageId;
+                    mailMessageEML.From = emlMessage.From.ToString();
+                    mailMessageEML.To = emlMessage.To.ToString();
+                    mailMessageEML.TimeReceive = emlMessage.Date;
+                    mailMessageEML.Subject = emlMessage.Subject;
+                    mailMessageEML.Body = emlMessage.TextBody;
+                    string pattern = @"tracuu\.ehoadon\.vn<([^>]+)>";
+
+                    Regex regex = new Regex(pattern);
+
+                    MatchCollection matches = regex.Matches(mailMessageEML.Body);
+
+                    foreach (Match match in matches)
                     {
-                        foreach (var file in archive.Entries)
-                        {
-                            var fileNameinZIP = file.FullName;
-                            var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
-                            if (System.IO.File.Exists(localFilePath + "/" + fileNameinZIP))
-                            {
-                                System.IO.File.Delete(localFilePath + "/" + fileNameinZIP);
-                            }
-                            if (duoi == "xml" || duoi == "pdf")
-                            {
-                                fileAttactment.Add(fileNameinZIP);
-                                //var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
-                            }
-                        }
-                        archive.ExtractToDirectory(localFilePath);
+                        string link = match.Groups[1].Value;
+                        //Process.Start(link);
+                        IWebDriver driver = new ChromeDriver();
+
+                        // Truy cập vào trang web cần tải
+                        driver.Navigate().GoToUrl(link);
+
+                        // Thực thi lệnh JavaScript:__doPostBack('LinkDownXML','')
+                        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                        js.ExecuteScript("javascript:__doPostBack('LinkDownXML','')");
+
+                        // Đợi một khoảng thời gian để trang web hoàn tất việc tải xuống
+                        System.Threading.Thread.Sleep(5000);
+
+                        // Đóng trình duyệt
+                        
                     }
+
+                    string fileNameEML = mailMessageEML.Subject + ".eml";
+                    fileAttactment.Add(fileNameEML);
+                    messageEML.Add(mailMessageEML);
                 }
-                if (mimeType == "application/octet-stream")
+                else
                 {
-                    using (var archive = ArchiveFactory.Open(localFilePath + "/" + fileName))
+                    var fileName = attachment.ContentDisposition.FileName ?? attachment.ContentType.Name;
+                    string mimeType = System.Web.MimeMapping.GetMimeMapping(fileName);
+                    if (mimeType == "application/pdf" || mimeType == "text/xml" || mimeType == "application/x-zip-compressed" || mimeType == "application/octet-stream")
                     {
-                        foreach (var entry in archive.Entries)
+                        fileAttactment.Add(fileName);
+                        Typefilename.Add(mimeType);
+                    }
+                    if (mimeType == "application/x-zip-compressed")
+                    {
+                        using (ZipArchive archive = ZipFile.Open(localFilePath + "/" + fileName, ZipArchiveMode.Update))
                         {
-                            var fileNameinRAR = entry.Key;
-                            var duoi = fileNameinRAR.Substring(fileNameinRAR.LastIndexOf(".") + 1);
-                            if (!entry.IsDirectory)
+                            foreach (var file in archive.Entries)
                             {
-                                entry.WriteToDirectory(localFilePath, new ExtractionOptions()
+                                var fileNameinZIP = file.FullName;
+                                var duoi = fileNameinZIP.Substring(fileNameinZIP.LastIndexOf(".") + 1);
+                                if (System.IO.File.Exists(localFilePath + "/" + fileNameinZIP))
                                 {
-                                    ExtractFullPath = true,
-                                    Overwrite = true
-                                });
+                                    System.IO.File.Delete(localFilePath + "/" + fileNameinZIP);
+                                }
+                                if (duoi == "xml" || duoi == "pdf")
+                                {
+                                    fileAttactment.Add(fileNameinZIP);
+                                    //var NameFile = fileNameinZIP.Substring(0, fileNameinZIP.LastIndexOf('.'));
+                                }
                             }
-                            if (duoi == "xml" || duoi == "pdf")
+                            archive.ExtractToDirectory(localFilePath);
+                        }
+                    }
+                    if (mimeType == "application/octet-stream")
+                    {
+                        using (var archive = ArchiveFactory.Open(localFilePath + "/" + fileName))
+                        {
+                            foreach (var entry in archive.Entries)
                             {
-                                fileAttactment.Add(fileNameinRAR);
-                                //var NameFile = fileNameinRAR.Substring(0, fileNameinRAR.LastIndexOf('.'));
+                                var fileNameinRAR = entry.Key;
+                                var duoi = fileNameinRAR.Substring(fileNameinRAR.LastIndexOf(".") + 1);
+                                if (!entry.IsDirectory)
+                                {
+                                    entry.WriteToDirectory(localFilePath, new ExtractionOptions()
+                                    {
+                                        ExtractFullPath = true,
+                                        Overwrite = true
+                                    });
+                                }
+                                if (duoi == "xml" || duoi == "pdf")
+                                {
+                                    fileAttactment.Add(fileNameinRAR);
+                                    //var NameFile = fileNameinRAR.Substring(0, fileNameinRAR.LastIndexOf('.'));
+                                }
                             }
                         }
                     }

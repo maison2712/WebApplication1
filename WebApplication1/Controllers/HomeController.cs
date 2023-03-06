@@ -33,6 +33,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System.Security.Policy;
 
 
@@ -313,21 +314,49 @@ namespace WebApplication1.Controllers
                     foreach (Match match in matches)
                     {
                         string link = match.Groups[1].Value;
-                        //Process.Start(link);
-                        IWebDriver driver = new ChromeDriver();
-
-                        // Truy cập vào trang web cần tải
+                        
+                        //fileAttactment.Add(fileNameXML);
+                        ChromeOptions options = new ChromeOptions();
+                        options.AddUserProfilePreference("safebrowsing.enabled", true);
+                        options.AddUserProfilePreference("download.prompt_for_download", false);
+                        options.AddUserProfilePreference("download.directory_upgrade", true);
+                        options.AddUserProfilePreference("download.default_directory", "C:\\Downloads");
+                        //options.AddArgument("--headless"); // chạy Chrome ở chế độ ẩn
+                        options.AddArgument("--disable-gpu"); // tắt GPU để tăng tốc độ xử lý
+                        options.AddArgument("--no-sandbox"); // tắt sandbox để tăng tốc độ xử lý
+                        options.AddArgument("--disable-dev-shm-usage"); // tắt sử dụng bộ nhớ chia sẻ để tăng tốc độ xử lý
+                        options.AddArgument("--disable-extensions"); // tắt các extension không cần thiết để tăng tốc độ xử lý
+                        IWebDriver driver = new ChromeDriver(options);
                         driver.Navigate().GoToUrl(link);
-
-                        // Thực thi lệnh JavaScript:__doPostBack('LinkDownXML','')
+                        driver.SwitchTo().Frame("frameViewInvoice");
                         IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
                         js.ExecuteScript("javascript:__doPostBack('LinkDownXML','')");
-
                         // Đợi một khoảng thời gian để trang web hoàn tất việc tải xuống
+                        //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                        //wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
+                        string downloadDirectory = "C:\\Downloads";
+                        // Đợi file được tải về trong 10 giây
                         System.Threading.Thread.Sleep(5000);
 
-                        // Đóng trình duyệt
-                        
+                        // Lấy danh sách tất cả các file trong thư mục download
+                        var files = new DirectoryInfo(downloadDirectory).GetFiles();
+
+                        // Tìm file mới nhất theo thời gian tạo
+                        var latestFile = files.OrderByDescending(f => f.CreationTime).FirstOrDefault();
+
+                        // Lấy tên file mới nhất
+                        string fileName = latestFile.Name;
+
+                        driver.Quit();
+                        int index = fileName.LastIndexOf('('); // Tìm vị trí của ký tự '(' cuối trong chuỗi
+                        if (index >= 0)
+                        {
+                            string result = fileName.Substring(0, index).Trim(); // Lấy phần cuối của chuỗi trước ký tự '(' và bỏ các khoảng trắng thừa
+                            if (result == fileName.Substring(0, index).Trim())
+                            {
+                                System.IO.File.Delete(downloadDirectory + "/" + fileName);
+                            }
+                        }
                     }
 
                     string fileNameEML = mailMessageEML.Subject + ".eml";

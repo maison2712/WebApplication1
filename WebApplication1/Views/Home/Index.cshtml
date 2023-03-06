@@ -461,6 +461,7 @@
             //Nút đọc chi tiết từng mail một theo id
             $scope.readDetail = function (id) {
                 $(document).off("click", ".btnShowModalHDDTClick"); //Xóa chức năng vừa được click
+                $(document).off("click", ".btnShowModalEMLClick"); 
                 $("#emailDetail").css("display", "block")
                 $("#fileAttactment").empty();
                 //Gọi API để lấy ra data của từng mail theo id

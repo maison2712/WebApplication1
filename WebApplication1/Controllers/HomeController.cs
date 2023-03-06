@@ -320,7 +320,7 @@ namespace WebApplication1.Controllers
                         options.AddUserProfilePreference("safebrowsing.enabled", true);
                         options.AddUserProfilePreference("download.prompt_for_download", false);
                         options.AddUserProfilePreference("download.directory_upgrade", true);
-                        options.AddUserProfilePreference("download.default_directory", "C:\\Downloads");
+                        options.AddUserProfilePreference("download.default_directory", AppDomain.CurrentDomain.BaseDirectory + @"Attachment\" + stringdate);
                         //options.AddArgument("--headless"); // chạy Chrome ở chế độ ẩn
                         options.AddArgument("--disable-gpu"); // tắt GPU để tăng tốc độ xử lý
                         options.AddArgument("--no-sandbox"); // tắt sandbox để tăng tốc độ xử lý
@@ -334,10 +334,10 @@ namespace WebApplication1.Controllers
                         // Đợi một khoảng thời gian để trang web hoàn tất việc tải xuống
                         //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
                         //wait.Until(driver => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
-                        string downloadDirectory = "C:\\Downloads";
+                        string downloadDirectory = AppDomain.CurrentDomain.BaseDirectory + @"Attachment\" + stringdate;
                         // Đợi file được tải về trong 10 giây
                         System.Threading.Thread.Sleep(5000);
-
+                        driver.Quit();
                         // Lấy danh sách tất cả các file trong thư mục download
                         var files = new DirectoryInfo(downloadDirectory).GetFiles();
 
@@ -347,7 +347,6 @@ namespace WebApplication1.Controllers
                         // Lấy tên file mới nhất
                         string fileName = latestFile.Name;
 
-                        driver.Quit();
                         int index = fileName.LastIndexOf('('); // Tìm vị trí của ký tự '(' cuối trong chuỗi
                         if (index >= 0)
                         {
@@ -356,6 +355,12 @@ namespace WebApplication1.Controllers
                             {
                                 System.IO.File.Delete(downloadDirectory + "/" + fileName);
                             }
+                            string fileNameXML = result + ".xml";
+                            fileAttactment.Add(fileNameXML);
+                        }
+                        else
+                        {
+                            fileAttactment.Add(fileName);
                         }
                     }
 
